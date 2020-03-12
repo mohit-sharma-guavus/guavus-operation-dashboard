@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+
+  table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(odd) {
+  background-color: #dddddd;
+}
+</style>
+</style>
+
+<body style="background-color: floralwhite;">
+
+  <div style="background-color: darkslategray; height: 60px; width: 1420px;">
+    <img src="Logo_Dashboard.png" style="height: 60px; width: 150px;">
+  </div>
+
+  <div style="margin-top: 100px;">
+<table>
+  <thead>
+    <tr>
+      <th>Hostgroup</th>
+      <th>Host IP</th>
+      <th>Host FQDN</th>
+      <th>Host Liveliness</th>    
+    </tr>
+</thead>
+<tbody>
+  {% for row in value %}
+  <tr>
+    <td>{{ row[0] }} </td>
+    <td>{{ row[1] }}</td>
+    <td>{{ row[2] }}</td>
+    <td>{{ row[3] }}</td>    
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+</div>
+<div style="background-color: darkslategray; height: 30px; width: 1420px; margin-top: 460px;">
+    </div>
+</body>
+</html>

@@ -21,63 +21,17 @@
   border-radius: 50%;
   margin-bottom: 650px;
 }
-
-/* The popup form - hidden by default */
-.form-popup {
-  display: none;
-  position: fixed;
-  bottom: 20px;
-  top: 30px;
-  right: 380px;
-  border: 1px solid black;
-  z-index: 9;
-  height: 700px;
-  width: 700px;
+.textbox{
+  width: 300px;
+  height: 40px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  resize: none;
 }
 
-/* Add styles to the form container */
-.form-container {
-  max-width: 300px;
-  padding: 10px;
-  background-color: white;
-}
-
-/* Full-width input fields */
-.form-container input[type=text], .form-container input[type=password] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
-}
-
-/* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
-/* Set a style for the submit/login button */
-.form-container .btn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom:10px;
-  opacity: 0.8;
-}
-
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
-}
-
-/* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
-  opacity: 1;
-}
 
 table {
   font-family: arial, sans-serif;
@@ -97,162 +51,47 @@ tr:nth-child(even) {
 </style>
 </head>
 
-<body style="background-color: WhiteSmoke;">
+<body style="background-color: floralwhite;">
  
   
 
-  <div style="background-color: rgb(70, 128, 128); height: 60px; width: 1400px;">
+  <div style="background-color: darkslategray; height: 60px; width: 1420px;">
     <img src="/static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
   </div>
-  
+  <div style="margin-top: 30px;">
+    
+    <label for="search"><b>Search Cluster</b></label>
+    <input class="textbox" type="text" placeholder="Search Cluster">
+    <button type="submit" style="height: 40px; width: 200px; margin-left: 160px; margin-left: 100px; background-color: #4CAF50;  border-radius: 4px;"><b>Search</b></button><br>
+  </div>
+
 <div style="margin-top: 60px">
-  <h2>Current Available Cluster  </h2>
-  <table>
-    <thead>
+<table>
+  <thead>
     <tr>
       <th>Cluster ID</th>
       <th>Cluster Name</th>
       <th>Cluster Description</th>
       <th>Cluster Date</th>
     </tr>
-    </thead>
-    <tbody>
-      {% for row in value %}
-      <tr>
-          <td>{{ row[0] }}</td>
-          <td>{{ row[1] }}</td>
-          <td>{{ row[2] }}</td>
-          <td>{{ row[3] }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  </thead>
+  <tbody>
+    {% for row in value %}
+    <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }} </td>
+        <td>{{ row[2] }}</td>
+        <td>{{ row[3] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>  
+</table>
 </div>
-<img onclick="openForm()" class="open-button" src="/static/plus_icon.png">
+<a href = "{{ url_for('add_cluster') }}"><img class="open-button" src="/static/plus_icon.png"></a>
 
-<div class="form-popup" id="myForm" >
-  <form name="form1" action="#" class="form-container">
-    <div style="background-color: white; height: 650px; width: 690px;">
-    <h3>Add cluster</h3>
 
-    <label for="email"><b>Cluster Name</b></label>
-    <input type="text" placeholder="Cluster Name" name="email" required style="height:2px;width: 400px;"><br>
-    <label for="email"><b>Cluster Description</b></label>
-    <input type="text" placeholder="Cluster Description" style="height:2px;width: 300px;">
-     <h3>enter host details </h3>
-    
-    <div style="width: 700px;">
-    <label for="hostgroup"><b>Hostgroup</b></label>
-  <select id="hostgroup" name="cars">
-    <option value="mgt">Management-Node</option>
-    <option value="mst">Master-Node</option>
-    <option value="slv">Slave-Node</option>
-    <option value="lb">Load-Balancer-Node</option>
-    <option value="other">Other</option>
-  </select>
-    <label for="psw"><b>IP Address</b></label>
-    <input type="text" placeholder="Enter IP Address" name="ip1" required style="height:2px;width: 100px;">
-    
-    <label for="psw"><b>IP FQDN</b></label>
-    <input type="text" placeholder="Enter FQDN" name="psw" required style="height:2px;width: 100px;">
+<div style="background-color: darkslategray; height: 30px; width: 1420px; margin-top: 460px;">
     </div>
-    
-     <div style="width: 700px;">
-     <label for="hostgroup"><b>Hostgroup</b></label>
-  <select id="hostgroup" name="cars">
-    <option value="mgt">Management-Node</option>
-    <option value="mst">Master-Node</option>
-    <option value="slv">Slave-Node</option>
-    <option value="lb">Load-Balancer-Node</option>
-    <option value="other">Other</option>
-  </select>
-    <label for="psw"><b>IP Address</b></label>
-    <input type="text" placeholder="Enter IP Address"  style="height:2px;width: 115px;">
-    
-    <label for="psw"><b>IP FQDN</b></label>
-    <input type="text" placeholder="Enter FQDN"  style="height:2px;width: 115px;">
-    </div>
-    
-    <div style="width: 700px;">
-    <label for="hostgroup"><b>Hostgroup</b></label>
-  <select id="hostgroup" name="cars">
-    <option value="mgt">Management-Node</option>
-    <option value="mst">Master-Node</option>
-    <option value="slv">Slave-Node</option>
-    <option value="lb">Load-Balancer-Node</option>
-    <option value="other">Other</option>
-  </select>
-    <label for="psw"><b>IP Address</b></label>
-    <input type="text" placeholder="Enter IP Address"  style="height:2px;width: 115px;">
-    
-    <label for="psw"><b>IP FQDN</b></label>
-    <input type="text" placeholder="Enter FQDN"  style="height:2px;width: 115px;">
-    </div>
-    
-    <div style="width: 700px;">
-    <label for="hostgroup"><b>Hostgroup</b></label>
-  <select id="hostgroup" name="cars">
-    <option value="mgt">Management-Node</option>
-    <option value="mst">Master-Node</option>
-    <option value="slv">Slave-Node</option>
-    <option value="lb">Load-Balancer-Node</option>
-    <option value="other">Other</option>
-  </select>
-    <label for="psw"><b>IP Address</b></label>
-    <input type="text" placeholder="Enter IP Address"  style="height:2px;width: 115px;">
-    
-    <label for="psw"><b>IP FQDN</b></label>
-    <input type="text" placeholder="Enter FQDN"  style="height:2px;width: 115px;">
-    </div>
-    
-    <div style="width: 700px;">
-    <label for="hostgroup"><b>Hostgroup</b></label>
-  <select id="hostgroup" name="cars">
-    <option value="mgt">Management-Node</option>
-    <option value="mst">Master-Node</option>
-    <option value="slv">Slave-Node</option>
-    <option value="lb">Load-Balancer-Node</option>
-    <option value="other">Other</option>
-  </select>
-    <label for="psw"><b>IP Address</b></label>
-    <input type="text" placeholder="Enter IP Address"  style="height:2px;width: 115px;">
-    
-    <label for="psw"><b>IP FQDN</b></label>
-    <input type="text" placeholder="Enter FQDN"  style="height:2px;width: 115px;">
-    </div>
-
-    
-    
-    <button type="submit" class="btn" onclick="ValidateIPaddress(document.form1.ip1)" style="height: 20px; width: 300px; margin-left: 160px;">Submit</button><br>
-    <button type="button" class="btn cancel" onclick="closeForm()" style="height: 20px; width: 300px; margin-left: 160px;">Cancel</button>
-  </form>
-</div>
-</div>
-
-<script>
-function openForm() {
-  document.getElementById("myForm").style.display = "block";
-}
-
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
-}
-function ValidateIPaddress(inputText)
- {
- var ipformat = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
- if(inputText.value.match(ipformat))
- {
- document.form1.text1.focus();
- return true;
- }
- else
- {
- alert("You have entered an invalid IP address!");
- document.form1.text1.focus();return false;
- }
- }
-
-</script>
 
 </body>
 </html>
