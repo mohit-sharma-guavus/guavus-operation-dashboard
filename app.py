@@ -4,7 +4,7 @@ Created on @ 2020
 @author: 
 """
 #imports
-from flask import Flask, render_template, json, request, session, redirect
+from flask import Flask, render_template, json, request, session, redirect, url_for, send_file, send_from_directory, safe_join, abort, flash
 import os
 import sys
 import time
@@ -23,10 +23,13 @@ app.config['MYSQL_DATABASE_HOST'] = '192.168.133.196'
 #app.config['MYSQL_DATABASE_PORT'] = 3306
 mysql.init_app(app)
 
+#Config Parameters
+app.config["CLIENT_CSV"] = "/Users/mohitsharma/Desktop/operaton-dashboard/scripts"
+
 #define methods for routes (what to do and display)
 @app.route('/')
 def home():
-    return 'Hello Operation Dashboard!'
+    return render_template("homepage.html")
 
 @app.route('/clusters')
 def clusters():
@@ -102,39 +105,49 @@ def add_cluster():
                 cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)", (new_cluster_name, clust_id, new_cluster_name, host_group7, ip_address7, fqdn7))
                 conn1.commit()
                 conn1.close()
-                return('Host Detail was successfully added')
+#              flash('Cluster Successfully Added!!')
+                return redirect(url_for('clusters'))
             else:
                 return('Cluster with that name not exist!!')
     return render_template('addcluster.html')
 
 
-@app.route('/hosts/<cluster_name>')
+@app.route('/<cluster_name>/hosts')
 def hosts(cluster_name):
-    try:
-        print("Showing Host List!!")
+    print("Showing Host List!!")
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT hostgroup, host_IP, host_fqdn, host_live FROM `%s` ", (cluster_name))
+    data = cursor.fetchall()
+    return render_template("page2.html", value=data, name=cluster_name)
+    
+
+
+@app.route('/<clusterName>/checklist')
+def checklist(clusterName):
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT hostgroup, host_IP, host_fqdn, host_live FROM %s", (cluster_name))
+        cursor.execute("SELECT host_fqdn FROM `%s`", (clusterName))
         data = cursor.fetchall()
-        return render_template("hosts.html", value=data)
-    except Exception as e:
-        return render_template("hosts_fresh.html", error = str(e))
-"""
-
-@app.route('/checklist/<cluster-name>')
-def checklist():
-    try:
-        os.system("sh test.sh")
-        os.system("sh test.sh")
+        with open('scripts/hosts', 'w') as f:
+            for item in data:
+                f.write("%s\n" % item)
+        os.system("sh scripts/run.sh")
         print("Running Check List!!")
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM host_<clsuter-name>")
-        data = cursor.fetchall()
-        return render_template("Checklist.html", value=data)
-    except Exception as e:
-        return render_template("hosts_fresh.html", error = str(e))
-"""
+        cursor.execute("SELECT hostgroup, host_IP, host_fqdn, host_live FROM `%s` ", (clusterName))
+        data1 = cursor.fetchall()
+        return render_template("page2.html", value=data1, name=clusterName)
+
+@app.route("/return-file")
+def get_csv():
+    try:
+        return send_from_directory(
+            app.config["CLIENT_CSV"], filename="Checklist_All_Host.txt", as_attachment=True
+            )
+    except FileNotFoundError:
+        abort(404)
 
 if __name__ == "__main__":
     app.run()
