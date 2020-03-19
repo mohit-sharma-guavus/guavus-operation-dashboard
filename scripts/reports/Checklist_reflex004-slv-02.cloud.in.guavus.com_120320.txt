@@ -1,0 +1,17 @@
+###############################################
+#################  reflex004-slv-02.cloud.in.guavus.com  ####################
+###############################################
+[1;32mPASSED - Uptime is more than 6hrs[0m
+[1;32mPASSED - Linux-OSversion: 7.6.1810 [0m
+[1;32mPASSED - Kernal-version: 3.10.0-957.21.3.el7.x86_64 [0m
+[1;31mFAILED - /opt/repos Filesystem NOT FOUND[0m
+[1;31mFAILED - /var/log Filesystem size: 30 [0m
+[1;32mPASSED - / Filesystem size: 70 [0m
+[1;32mCPU : 12 [0m
+[1;32mMEMORY in GB : 41 [0m
+[1;32mInterface Link MTU is :  [0m
+[1;32mPASSED - SWAP is off[0m
+[1;31mFAILED - Selinux is Enabled [0m
+[1;32mPASSED - Firewalld service Stoped[0m
+[1;31mFAILED - NTPD is not Configured[0m
+[1;31mFAILED - IP Forwarding is Disable[0m

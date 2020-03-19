@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+
+
+
+.input {
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  background-color: #f8f8f8;
+  height: 40px;
+  width: 300px;
+}
+
+.textbox{
+  width: 300px;
+  height: 40px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  resize: none;
+}
+</style>
+</head>
+
+<body style="background-color: floralwhite;">
+  <form name="form1" action="#"> 
+ 
+  
+
+  <div style="background-color: #0c1731; height: 60px; width: 100%;">
+    <img src="/static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
+  </div>
+  <div style="margin-top: 10px; margin-left: 10px; position: absolute;">
+    <a href="/" target="blank"><button class="button">Home</button></a>
+    <a href="/" target="blank"><button class="button">Clusters</button></a>
+  </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+<form action = "{{ request.path }}" method = "post">
+<div style="margin-left: 150px">
+    <label for="email" style="font-family: Optima, sans-serif;"><b>Cluster Name</b></label>
+    <input  class="textbox" type="text" placeholder="Cluster Name" name="email" required style="margin-left: 40px;">
+</div><br>
+<div style="margin-left: 150px">
+
+    <label for="email" style="font-family: Optima, sans-serif;"><b>Cluster Description</b></label>
+    <input class="textbox" type="text" placeholder="Cluster Description" name="description">
+     </div>
+
+     <h2 style="margin-left: 150px;font-family: Optima, sans-serif;">Enter host details </h2>
+    
+    <div style="margin-left: 150px;" >
+    <label for="hostgroup" style="font-family: Optima, sans-serif;"><b>Hostgroup</b></label>
+  <select  class="input" id="hostgroup" name="hg1" required>
+    <option ></option>
+    <option value="mgt">Management-Node</option>
+    <option value="mst">Master-Node</option>
+    <option value="slv">Slave-Node</option>
+    <option value="lb">Load-Balancer-Node</option>
+    <option value="other">Other</option>
+  </select>
+    <label for="psw" style="font-family: Optima, sans-serif;"><b>IP Address</b></label>
+    <input class="textbox" type="text" placeholder="Enter IP Address" name='ip1' required minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" title="Invalid IP Address">
+
+    <label for="psw" style="font-family: Optima, sans-serif;"><b>IP FQDN</b></label>
+    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq1" required  pattern="(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)" title="Invalid FQDN">
+    </div></br>
+
+
+    <div style="margin-left: 150px;" >
+    <label for="hostgroup" style="font-family: Optima, sans-serif;"><b>Hostgroup</b></label>
+  <select  class="input" id="hostgroup" name="hg2">
+    <option ></option>
+    <option value="mgt">Management-Node</option>
+    <option value="mst">Master-Node</option>
+    <option value="slv">Slave-Node</option>
+    <option value="lb">Load-Balancer-Node</option>
+    <option value="other">Other</option>
+  </select>
+    <label for="psw" style="font-family: Optima, sans-serif;"><b>IP Address</b></label>
+    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip2" minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" title="Invalid IP Address">
+    
+    <label for="psw" style="font-family: Optima, sans-serif;"><b>IP FQDN</b></label>
+    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq2" pattern="(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)" title="Invalid FQDN">
+    </div></br>
+    
+
+    <div style="margin-left: 150px;" >
+    <label for="hostgroup" style="font-family: Optima, sans-serif;"><b>Hostgroup</b></label>
+  <select  class="input" id="hostgroup" name="hg3">
+    <option ></option>
+    <option value="mgt">Management-Node</option>
+    <option value="mst">Master-Node</option>
+    <option value="slv">Slave-Node</option>
+    <option value="lb">Load-Balancer-Node</option>
+    <option value="other">Other</option>
+  </select>
+    <label for="psw" style="font-family: Optima, sans-serif;"><b>IP Address</b></label>
+    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip3" minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" title="Invalid IP Address">
+    
+    <label for="psw" style="font-family: Optima, sans-serif;"><b>IP FQDN</b></label>
+    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq3" pattern="(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)" title="Invalid FQDN">
+    </div></br>
+
+    <div style="margin-left: 150px;" >
+    <label for="hostgroup" style="font-family: Optima, sans-serif;"><b>Hostgroup</b></label>
+  <select  class="input" id="hostgroup" name="hg4">
+    <option ></option>
+    <option value="mgt">Management-Node</option>
+    <option value="mst">Master-Node</option>
+    <option value="slv">Slave-Node</option>
+    <option value="lb">Load-Balancer-Node</option>
+    <option value="other">Other</option>
+  </select>
+    <label for="psw" style="font-family: Optima, sans-serif;"><b>IP Address</b></label>
+    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip4" minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" title="Invalid IP Address">
+    
+    <label for="psw" style="font-family: Optima, sans-serif;"><b>IP FQDN</b></label>
+    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq4" pattern="(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)" title="Invalid FQDN">
+    </div></br>
+
+    <div style="margin-left: 150px;" >
+    <label for="hostgroup" style="font-family: Optima, sans-serif;"><b>Hostgroup</b></label>
+  <select  class="input" id="hostgroup" name="hg5">
+    <option ></option>
+    <option value="mgt">Management-Node</option>
+    <option value="mst">Master-Node</option>
+    <option value="slv">Slave-Node</option>
+    <option value="lb">Load-Balancer-Node</option>
+    <option value="other">Other</option>
+  </select>
+    <label for="psw" style="font-family: Optima, sans-serif;"><b>IP Address</b></label>
+    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip5" minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" title="Invalid IP Address" >
+    
+    <label for="psw" style="font-family: Optima, sans-serif;"><b>IP FQDN</b></label>
+    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq5" pattern="(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)" title="Invalid FQDN">
+    </div></br>
+
+    <div style="margin-left: 150px;" >
+    <label for="hostgroup" style="font-family: Optima, sans-serif;"><b>Hostgroup</b></label>
+  <select  class="input" id="hostgroup" name="hg6">
+    <option ></option>
+    <option value="mgt">Management-Node</option>
+    <option value="mst">Master-Node</option>
+    <option value="slv">Slave-Node</option>
+    <option value="lb">Load-Balancer-Node</option>
+    <option value="other">Other</option>
+  </select>
+    <label for="psw" style="font-family: Optima, sans-serif;"><b>IP Address</b></label>
+    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip6" minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" title="Invalid IP Address">
+    
+    <label for="psw" style="font-family: Optima, sans-serif;"><b>IP FQDN</b></label>
+    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq6" pattern="(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)" title="Invalid FQDN">
+    </div></br>
+
+    <div style="margin-left: 150px;" >
+    <label for="hostgroup" style="font-family: Optima, sans-serif;"><b>Hostgroup</b></label>
+  <select  class="input" id="hostgroup" name="hg7">
+    <option ></option>
+    <option value="mgt">Management-Node</option>
+    <option value="mst">Master-Node</option>
+    <option value="slv">Slave-Node</option>
+    <option value="lb">Load-Balancer-Node</option>
+    <option value="other">Other</option>
+  </select>
+    <label for="psw" style="font-family: Optima, sans-serif;"><b>IP Address</b></label>
+    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip7" minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" title="Invalid IP Address">
+    
+    <label for="psw" style="font-family: Optima, sans-serif;"><b>IP FQDN</b></label>
+    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq7" pattern="(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)" title="Invalid FQDN">
+    </div></br>
+     
+    <div>
+    <button type="submit" class="btn" style="height: 50px; width: 200px; margin-left: 160px; margin-left: 1000px; background-color: #4CAF50;">Submit</button><br>
+</div>
+</div>
+</div>
+</form>
+<div style="background-color: #0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
+
+</body>
+</html>
