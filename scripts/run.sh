@@ -26,7 +26,7 @@ echo $i
 /usr/local/bin/sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no "$SSH_USERNAME"@"$i":/tmp/Checklist_"$i"_"$day".txt /Users/mohitsharma/Desktop/operaton-dashboard/scripts/reports/.
 done
 
->/Users/mohitsharma/Desktop/operaton-dashboard/scripts/Checklist_All_Host.txt
+rm /Users/mohitsharma/Desktop/operaton-dashboard/scripts/Checklist_All_Host.txt
 
 for j in `cat /Users/mohitsharma/Desktop/operaton-dashboard/scripts/hosts`
 do

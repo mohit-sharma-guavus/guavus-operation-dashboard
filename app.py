@@ -24,7 +24,7 @@ app.config['MYSQL_DATABASE_HOST'] = '192.168.133.196'
 mysql.init_app(app)
 
 #Config Parameters
-app.config["CLIENT_CSV"] = "/Users/mohitsharma/Desktop/operaton-dashboard/scripts"
+app.config["CLIENT_CSV"] = "/Users/mohitsharma/Desktop/operaton-dashboard/scripts/"
 
 #define methods for routes (what to do and display)
 #error = None
@@ -74,9 +74,13 @@ def delete_cluster(clusterName):
     cursor.execute("DROP TABLE `%s`", (clusterName))
     conn.commit()
     conn.close()
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT cluster_name,cluster_desc,cluster_creation_date FROM cluster_info")
+    data = cursor.fetchall()
     error = 'Cluster Successfully Deleted!!'
  #   return redirect(url_for('clusters', error = error))
-    return render_template("clusters.html", error = error)
+    return render_template("clusters.html", error = error, value=data)
 
 
 @app.route('/search', methods=['POST'])
