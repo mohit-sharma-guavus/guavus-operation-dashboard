@@ -66,6 +66,7 @@ def inprogress():
 
 @app.route('/<clusterName>/delete_cluster')
 def delete_cluster(clusterName):
+    error = None
     print("Deleting Cluster Clusters!!")
     conn = mysql.get_db()
     cursor = conn.cursor()
@@ -73,9 +74,9 @@ def delete_cluster(clusterName):
     cursor.execute("DROP TABLE `%s`", (clusterName))
     conn.commit()
     conn.close()
-    error = 'Clsuter Successfully Deleted!!'
-    return redirect(url_for('clusters', error = error))
-#   return render_template("clusters.html", output = error1)
+    error = 'Cluster Successfully Deleted!!'
+ #   return redirect(url_for('clusters', error = error))
+    return render_template("clusters.html", error = error)
 
 
 @app.route('/search', methods=['POST'])
@@ -99,8 +100,14 @@ def search():
 @app.route('/add_cluster', methods = ['GET', 'POST'])
 def add_cluster():
     if request.method == 'POST':
-        if not request.form['email'] or not request.form['description']:
-         return('Please enter cluster name the fields', 'error')
+        check_cluster_name = request.form['email']
+        conn3 = mysql.connect()
+        cursor3 = conn3.cursor()
+        cursor3.execute("SELECT cluster_name FROM cluster_info WHERE cluster_name = %s", (check_cluster_name))
+        data3 = cursor3.fetchone()
+        if data3:
+            error = 'Oops! Cluster with this name already exists! Try again with new name.'
+            return render_template("clusters.html", error=error)
         else:
             new_cluster_name=request.form['email']
             cluster_description=request.form['description']
@@ -109,7 +116,6 @@ def add_cluster():
             cur = conn.cursor()
             cur.execute("INSERT INTO cluster_info(cluster_name, cluster_desc, cluster_creation_date) VALUES (%s,%s,%s)", (new_cluster_name,cluster_description,cluster_date))
             conn.commit()
- #           return('Cluster was successfully added!!!')
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute("SELECT cluster_name FROM cluster_info WHERE cluster_name = %s LIMIT 1", (new_cluster_name))
@@ -117,45 +123,49 @@ def add_cluster():
             data2 = data1[0]
             if data2 == request.form['email']:
                 new_cluster_name=request.form['email']
-                host_group1=request.form['hg1']
-                ip_address1=request.form['ip1']
-                fqdn1=request.form['fq1']
-                host_group2=request.form['hg2']
-                ip_address2=request.form['ip2']
-                fqdn2=request.form['fq2']
-                host_group3=request.form['hg3']
-                ip_address3=request.form['ip3']
-                fqdn3=request.form['fq3']
-                host_group4=request.form['hg4']
-                ip_address4=request.form['ip4']
-                fqdn4=request.form['fq4']
-                host_group5=request.form['hg5']
-                ip_address5=request.form['ip5']
-                fqdn5=request.form['fq5']
-                host_group6=request.form['hg6']
-                ip_address6=request.form['ip6']
-                fqdn6=request.form['fq6']
-                host_group7=request.form['hg7']
-                ip_address7=request.form['ip7']
-                fqdn7=request.form['fq7']
                 conn = mysql.connect()
                 cursor = conn.cursor()
                 cursor.execute("SELECT cluster_id FROM cluster_info where cluster_name = %s LIMIT 1", (new_cluster_name))
                 clust_id_temp = cursor.fetchone()
                 clust_id = clust_id_temp[0]
-                suffix = "_host_info"
- #              table_name = new_cluster_name + suffix
- #              return table_name
                 conn1 = mysql.get_db()
                 cur = conn1.cursor()
-                cur.execute("CREATE TABLE `%s`(cluster_id INT NOT NULL, cluster_name VARCHAR(20) NOT NULL, host_id INT NOT NULL AUTO_INCREMENT, hostgroup VARCHAR(20) NOT NULL, host_IP VARCHAR(20) NOT NULL,host_fqdn VARCHAR(200) NOT NULL,host_live VARCHAR(20), PRIMARY KEY (host_id))", (new_cluster_name))
-                cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)", (new_cluster_name, clust_id, new_cluster_name, host_group1, ip_address1, fqdn1))
-                cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)", (new_cluster_name, clust_id, new_cluster_name, host_group2, ip_address2, fqdn2))
-                cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)", (new_cluster_name, clust_id, new_cluster_name, host_group3, ip_address3, fqdn3))
-                cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)", (new_cluster_name, clust_id, new_cluster_name, host_group4, ip_address4, fqdn4))
-                cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)", (new_cluster_name, clust_id, new_cluster_name, host_group5, ip_address5, fqdn5))
-                cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)", (new_cluster_name, clust_id, new_cluster_name, host_group6, ip_address6, fqdn6))
-                cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)", (new_cluster_name, clust_id, new_cluster_name, host_group7, ip_address7, fqdn7))
+                cur.execute("CREATE TABLE `%s`(cluster_id INT NOT NULL, cluster_name VARCHAR(20) NOT NULL, host_id INT NOT NULL AUTO_INCREMENT, hostgroup VARCHAR(20) NOT NULL, host_IP VARCHAR(20) NOT NULL,host_fqdn VARCHAR(200) NOT NULL,host_live VARCHAR(20), PRIMARY KEY (host_id))",(new_cluster_name))
+                if request.form['hg1']:
+                    host_group1=request.form['hg1']
+                    ip_address1=request.form['ip1']
+                    fqdn1=request.form['fq1']
+                    cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)",(new_cluster_name, clust_id, new_cluster_name, host_group1, ip_address1, fqdn1))
+                if request.form['hg2']:
+                    host_group2=request.form['hg2']
+                    ip_address2=request.form['ip2']
+                    fqdn2=request.form['fq2']
+                    cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)",(new_cluster_name, clust_id, new_cluster_name, host_group2, ip_address2, fqdn2))
+                if request.form['hg3']:
+                    host_group3=request.form['hg3']
+                    ip_address3=request.form['ip3']
+                    fqdn3=request.form['fq3']
+                    cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)",(new_cluster_name, clust_id, new_cluster_name, host_group3, ip_address3, fqdn3))
+                if request.form['hg4']:
+                    host_group4=request.form['hg4']
+                    ip_address4=request.form['ip4']
+                    fqdn4=request.form['fq4']
+                    cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)",(new_cluster_name, clust_id, new_cluster_name, host_group4, ip_address4, fqdn4))
+                if request.form['hg5']:
+                    host_group5=request.form['hg5']
+                    ip_address5=request.form['ip5']
+                    fqdn5=request.form['fq5']
+                    cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)",(new_cluster_name, clust_id, new_cluster_name, host_group5, ip_address5, fqdn5))
+                if request.form['hg6']:
+                    host_group6=request.form['hg6']
+                    ip_address6=request.form['ip6']
+                    fqdn6=request.form['fq6']
+                    cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)",(new_cluster_name, clust_id, new_cluster_name, host_group6, ip_address6, fqdn6))
+                if request.form['hg7']:
+                    host_group7=request.form['hg7']
+                    ip_address7=request.form['ip7']
+                    fqdn7=request.form['fq7']
+                    cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)",(new_cluster_name, clust_id, new_cluster_name, host_group7, ip_address7, fqdn7))
                 conn1.commit()
                 conn1.close()
 #              flash('Cluster Successfully Added!!')
@@ -182,8 +192,62 @@ def delete_host(clusterName , hostName):
     cursor.execute("DELETE FROM `%s` WHERE host_IP = %s ", (clusterName, hostName))
     conn.commit()
     conn.close()
-    error1 = 'Clsuter Successfully Deleted'
+#    flash('Host Successfully Deleted!!')
     return redirect(url_for('hosts', cluster_name=clusterName))
+
+
+@app.route('/<clusterName>/add_host', methods = ['GET', 'POST'])
+def add_host(clusterName):
+    if request.method == 'POST':
+        print("Deleting Host!!")
+        new_cluster_name = clusterName
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT cluster_id FROM cluster_info where cluster_name = %s LIMIT 1", (new_cluster_name))
+        clust_id_temp = cursor.fetchone()
+        clust_id = clust_id_temp[0]
+        conn1 = mysql.get_db()
+        cur = conn1.cursor()
+        if request.form['hg1']:
+            host_group1=request.form['hg1']
+            ip_address1=request.form['ip1']
+            fqdn1=request.form['fq1']
+            cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)",(new_cluster_name, clust_id, new_cluster_name, host_group1, ip_address1, fqdn1))
+        if request.form['hg2']:
+            host_group2=request.form['hg2']
+            ip_address2=request.form['ip2']
+            fqdn2=request.form['fq2']
+            cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)",(new_cluster_name, clust_id, new_cluster_name, host_group2, ip_address2, fqdn2))
+        if request.form['hg3']:
+            host_group3=request.form['hg3']
+            ip_address3=request.form['ip3']
+            fqdn3=request.form['fq3']
+            cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)",(new_cluster_name, clust_id, new_cluster_name, host_group3, ip_address3, fqdn3))
+        if request.form['hg4']:
+            host_group4=request.form['hg4']
+            ip_address4=request.form['ip4']
+            fqdn4=request.form['fq4']
+            cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)",(new_cluster_name, clust_id, new_cluster_name, host_group4, ip_address4, fqdn4))
+        if request.form['hg5']:
+            host_group5=request.form['hg5']
+            ip_address5=request.form['ip5']
+            fqdn5=request.form['fq5']
+            cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)",(new_cluster_name, clust_id, new_cluster_name, host_group5, ip_address5, fqdn5))
+        if request.form['hg6']:
+            host_group6=request.form['hg6']
+            ip_address6=request.form['ip6']
+            fqdn6=request.form['fq6']
+            cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)",(new_cluster_name, clust_id, new_cluster_name, host_group6, ip_address6, fqdn6))
+        if request.form['hg7']:
+            host_group7=request.form['hg7']
+            ip_address7=request.form['ip7']
+            fqdn7=request.form['fq7']
+            cur.execute("INSERT INTO `%s`(cluster_id, cluster_name, hostgroup, host_IP, host_fqdn) VALUES (%s, %s, %s, %s, %s)",(new_cluster_name, clust_id, new_cluster_name, host_group7, ip_address7, fqdn7))
+        conn1.commit()
+        conn1.close()
+#       flash('Host Successfully Deleted!!')
+        return redirect(url_for('hosts', cluster_name=clusterName))
+    return render_template('addhost.html', name=clusterName )
 
 @app.route('/<clusterName>/checklist')
 def checklist(clusterName):
@@ -196,11 +260,7 @@ def checklist(clusterName):
                 f.write("%s\n" % item)
         os.system("sh scripts/run.sh")
         print("Running Check List!!")
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("SELECT hostgroup, host_IP, host_fqdn, host_live FROM `%s` ", (clusterName))
-        data1 = cursor.fetchall()
-        return render_template("page2.html", value=data1, name=clusterName)
+        return render_template("checklist.html", name=clusterName)
 
 @app.route("/return-file")
 def get_csv():

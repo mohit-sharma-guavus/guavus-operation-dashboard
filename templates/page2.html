@@ -68,15 +68,15 @@ border: 2px solid #4CAF50;
     <a href="/{{ name }}/home" target="blank"><button class="button">Menu</button></a>
   </div>
   <div>
-    <a href = "addhost.html"><img class="open-button" src="/static/plus_icon.png"></a>
+    <a href = "/{{ name }}/add_host"><img class="open-button" src="/static/plus_icon.png"></a>
   </div>
   <div style="margin-top: 100px;">
+<p style="font-family: Optima, sans-serif; margin-top: 40px">CLUSTER NAME: "{{ name }}"</p>
 <h1 style="font-family: Optima, sans-serif;">Host Detail</h1>
-<p style="font-family: Optima, sans-serif;">{{ name }} Cluster Host Detail!</p>
 
-{% if error %}
-         <p><strong>Message:</strong> {{ error }}
-{% endif %}
+
+
+
 <table style="font-family: Optima, sans-serif;">
   <thead>
     <tr>
@@ -96,19 +96,19 @@ border: 2px solid #4CAF50;
     <td>{{ row[1] }}</td>
     <td>{{ row[2] }}</td>
     <td>{{ row[3] }}</td>
-    <td><a href='/{{ name }}/{{ row[1] }}/delete_host'> <button type="submit" class="delete" >Delete Host</button> </a></td>
+    <td><a href='/{{ name }}/{{ row[1] }}/delete_host' onclick="return confirm('Are you sure you want to delete?')"> <button type="submit" class="delete" >Delete Host</button> </a></td>
   </tr>
   {% endfor %}
 </tbody>
 </table>
 </div>
+<br>
 <div class="run" align="center">
-  <a href="/{{ name }}/checklist" target="blank"><button class="btn btn-default">Run Checklist</button></a>
-  </div>
+  <a href="/{{ name }}/checklist" target="blank"><button class="delete">Run Checklist</button></a>
+</div>
 
-  <div class="download" align="center">
-    <a href="/return-file" target="blank"><button class="btn btn-default" >Download</button></a>
-  </div>
+
+
 
 
 <div style="background-color: #0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>

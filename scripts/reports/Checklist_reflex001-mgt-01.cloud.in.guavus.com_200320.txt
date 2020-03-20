@@ -1,7 +1,7 @@
-#######################################################
-#################  reflex001-mgt-01.cloud.in.guavus.com  ####################
-#######################################################
-#################### PASSED CHECKS    #########################
+################################################################
+#################  reflex001-mgt-01.cloud.in.guavus.com  ##################
+################################################################
+#################### PASSED CHECKS    ##########################
 PASSED - Uptime is more than 6hrs
 PASSED - Linux-OSversion: 7.6.1810 
 PASSED - Kernal-version: 3.10.0-957.21.3.el7.x86_64 
@@ -11,10 +11,10 @@ MEMORY in GB : 31
 Interface Link MTU is :  
 PASSED - SWAP is off
 PASSED - Firewalld service Stoped
-#################### FAILED CHECKS    #########################
+#################### FAILED CHECKS    ##########################
 FAILED - /opt/repos Filesystem NOT FOUND
 FAILED - /var/log Filesystem size: 30 
 FAILED - Selinux is Enabled 
 FAILED - NTPD is not Configured
 FAILED - IP Forwarding is Disable
-#######################################################
+################################################################

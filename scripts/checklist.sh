@@ -122,11 +122,11 @@ else
 fi
 
 
-echo "#######################################################" > /tmp/Checklist_"$HNAME"_"$day".txt
-echo "#################  $HNAME  ####################" >> /tmp/Checklist_"$HNAME"_"$day".txt
-echo "#######################################################" >> /tmp/Checklist_"$HNAME"_"$day".txt
-echo "#################### PASSED CHECKS    #########################" >> /tmp/Checklist_"$HNAME"_"$day".txt
+echo "################################################################" > /tmp/Checklist_"$HNAME"_"$day".txt
+echo "#################  $HNAME  ##################" >> /tmp/Checklist_"$HNAME"_"$day".txt
+echo "################################################################" >> /tmp/Checklist_"$HNAME"_"$day".txt
+echo "#################### PASSED CHECKS    ##########################" >> /tmp/Checklist_"$HNAME"_"$day".txt
 cat /tmp/Checklist_PASSED.txt >> /tmp/Checklist_"$HNAME"_"$day".txt
-echo "#################### FAILED CHECKS    #########################" >> /tmp/Checklist_"$HNAME"_"$day".txt
+echo "#################### FAILED CHECKS    ##########################" >> /tmp/Checklist_"$HNAME"_"$day".txt
 cat /tmp/Checklist_FAILED.txt >> /tmp/Checklist_"$HNAME"_"$day".txt
-echo "#######################################################" >> /tmp/Checklist_"$HNAME"_"$day".txt
+echo "################################################################" >> /tmp/Checklist_"$HNAME"_"$day".txt
