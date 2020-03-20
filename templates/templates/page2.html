@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+
+  table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(odd) {
+  background-color: #dddddd;
+}
+
+div#loading {
+    width: 35px;
+    height: 35px;
+    display: none;
+    background: url(/static/tenor.gif) no-repeat;
+    cursor: wait;
+    }
+
+</style>
+</style>
+
+<body style="background-color: floralwhite;">
+
+  <div style="background-color: darkslategray; height: 60px; width: 1420px;">
+    <img src="/static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
+  </div>
+
+  <div style="margin-top: 10px; margin-left: 10px; position: absolute;">
+    <a href="/" target="blank"><button class="button">Home</button></a>
+    <a href="/clusters" target="blank"><button class="button">Clusters</button></a>
+  </div>
+  <div style="margin-top: 100px;">
+<h1>Host Detail</h1>
+<p>{{ name }} Cluster Host Detail!</p>
+<table>
+  <thead>
+    <tr>
+      <th>Hostgroup</th>
+      <th>Host IP</th>
+      <th>Host FQDN</th>
+      <th>Host Liveliness</th>    
+    </tr>
+</thead>
+<tbody>
+  {% for row in value %}
+  <tr>
+    <td>{{ row[0] }} </td>
+    <td>{{ row[1] }}</td>
+    <td>{{ row[2] }}</td>
+    <td>{{ row[3] }}</td>    
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+</div>
+<div class="run" align="center">
+  <a href="/{{ name }}/checklist" target="blank"><button class="btn btn-default" >Run Checklist</button> onclick="loading() </a>
+  </div>
+
+  <div class="download" align="center">
+    <a href="/return-file" target="blank"><button class="btn btn-default" >Download</button></a>
+  </div>
+
+
+<div style="background-color: darkslategray; height: 30px; width: 1420px; margin-top: 460px;">
+    </div>
+</body>
+
+<script type="text/javascript">// <![CDATA[
+  function loading(){
+      $("#loading").show();
+      $("#content").hide();       
+  }
+// ]]></script>
+</html>
+
+

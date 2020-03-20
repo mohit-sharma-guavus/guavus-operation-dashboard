@@ -4,8 +4,10 @@
 
 <style>
 .button {
+  font-family: Optima, sans-serif;
   background-color: #4CAF50;
-  border: 1px solid;
+  border: 2px solid;
+  border-radius: 8px;
   color: white;
   padding: 15px 32px;
   text-decoration: none;
@@ -15,7 +17,16 @@
   cursor: pointer;
   height: 100px;
 }
-  
+
+.button:hover{
+  background-color: floralwhite;
+  color: #0c1731;
+}
+
+.buttons {
+  width: auto;
+  left: 10%;
+}
 </style>
 </head>
 
@@ -23,20 +34,24 @@
 
   <div style="background-color: #0c1731; height: 60px; width: 100%;">
     <img src="../static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
-   
   </div>
-<div style="margin-top: 300px; margin-left: 200px; position: absolute;">
-    <a href="/clusters" target="blank"><button class="button">Run Checklist</button></a>
+  <div style="margin-top: 10px; margin-left: 10px; position: absolute; height: 10px">
+    <a href="/" target="blank"><button class="text-decoration">Home</button></a>
+  </div>
+<p style="font-family: Optima, sans-serif; margin-top: 40px">CLUSTER NAME: "{{ name }}"</p>
+<h1>Select any one of below option. </h1>
+<div class="buttons" style="margin-top: 150px; margin-left: 100px; position: absolute;">
+  <a href="/{{ name }}/hosts" target="blank"><button class="button">Run Checklist</button></a>
 
-<button class="button">Monitoring</button>
+  <a href="/inprogress"><button class="button">Monitoring</button></a>
 
-<button class="button">Deployment</button>
+  <a href="/inprogress"><button class="button" >Deployment</button></a>
 
-<button class="button">Self-Diagonasis</button>
+  <a href="/inprogress"><button class="button">Self-Diagonasis</button></a>
 
-<button class="button">Self-Heal</button>
+  <a href="/inprogress"><button class="button">Self-Heal</button></a>
 </div>
 
-<div style="background-color: #0c1731; height: 30px; width: 100%; position: fixed; bottom: 0;">Copywrite CSS India</div>
+<div style="background-color: #0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
 </body>
 </html>

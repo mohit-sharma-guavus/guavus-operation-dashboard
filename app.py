@@ -27,22 +27,75 @@ mysql.init_app(app)
 app.config["CLIENT_CSV"] = "/Users/mohitsharma/Desktop/operaton-dashboard/scripts"
 
 #define methods for routes (what to do and display)
+#error = None
+
+"""
 @app.route('/')
 def home():
-    return render_template("homepage.html")
-
-@app.route('/clusters')
+    try:
+        print("Showing Clusters!!")
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT cluster_name, cluster_desc, cluster_creation_date FROM cluster_info")
+        data = cursor.fetchall()
+        return render_template("homepage.html", value=data)
+    except Exception as e:
+        return render_template("homepage.html")
+"""
+@app.route('/')
 def clusters():
     try:
         print("Showing Clusters!!")
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM cluster_info")
+        cursor.execute("SELECT cluster_name,cluster_desc,cluster_creation_date FROM cluster_info")
         data = cursor.fetchall()
         return render_template("clusters.html", value=data)
     except Exception as e:
-        return render_template("cluster_fresh.html", error = str(e))
+        return render_template("clusters_fresh.html", error = str(e))
 
+@app.route('/<cluster_name>/home')
+def home(cluster_name):
+    print("Showing Homepage")
+    return render_template("homepage.html", name=cluster_name)
+
+@app.route('/inprogress')
+def inprogress():
+    return render_template("inprogress.html")
+
+
+@app.route('/<clusterName>/delete_cluster')
+def delete_cluster(clusterName):
+    print("Deleting Cluster Clusters!!")
+    conn = mysql.get_db()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM cluster_info WHERE cluster_name = %s ", (clusterName))
+    cursor.execute("DROP TABLE `%s`", (clusterName))
+    conn.commit()
+    conn.close()
+    error = 'Clsuter Successfully Deleted!!'
+    return redirect(url_for('clusters', error = error))
+#   return render_template("clusters.html", output = error1)
+
+
+@app.route('/search', methods=['POST'])
+def search():
+    error = None
+    if request.method == "POST":
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT count(cluster_name) FROM cluster_info WHERE cluster_name = %s", request.form['search'])
+        if cursor.fetchone()[0] == 1 :
+            print("Clueter found!!")
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute("SELECT cluster_name,cluster_desc,cluster_creation_date FROM cluster_info where cluster_name = %s", request.form['search'])
+            data = cursor.fetchall()
+            return render_template("clusters.html", value=data)
+        else:
+            error = 'No such cluster Found!!'
+            return render_template("clusters.html", error = error)
+        
 @app.route('/add_cluster', methods = ['GET', 'POST'])
 def add_cluster():
     if request.method == 'POST':
@@ -120,8 +173,17 @@ def hosts(cluster_name):
     cursor.execute("SELECT hostgroup, host_IP, host_fqdn, host_live FROM `%s` ", (cluster_name))
     data = cursor.fetchall()
     return render_template("page2.html", value=data, name=cluster_name)
-    
 
+@app.route('/<clusterName>/<hostName>/delete_host')
+def delete_host(clusterName , hostName):
+    print("Deleting Host!!")
+    conn = mysql.get_db()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM `%s` WHERE host_IP = %s ", (clusterName, hostName))
+    conn.commit()
+    conn.close()
+    error1 = 'Clsuter Successfully Deleted'
+    return redirect(url_for('hosts', cluster_name=clusterName))
 
 @app.route('/<clusterName>/checklist')
 def checklist(clusterName):

@@ -27,6 +27,7 @@
 </head>
 
 <body style="background-color: floralwhite;">
+  <form name="form1" action="#"> 
  
   
 
@@ -56,7 +57,8 @@
     
     <div style="margin-left: 150px;" >
     <label for="hostgroup"><b>Hostgroup</b></label>
-  <select  class="input" id="hostgroup" name="hg1">
+  <select  class="input" id="hostgroup" name="hg1" required>
+    <option ></option>
     <option value="mgt">Management-Node</option>
     <option value="mst">Master-Node</option>
     <option value="slv">Slave-Node</option>
@@ -64,16 +66,17 @@
     <option value="other">Other</option>
   </select>
     <label for="psw"><b>IP Address</b></label>
-    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip1" required>
-    
+    <input class="textbox" type="text" placeholder="Enter IP Address" name='ip1' required minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" title="Invalid IP Address">
+
     <label for="psw"><b>IP FQDN</b></label>
-    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq1" required>
+    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq1" required  pattern="(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)" title="Invalid FQDN">
     </div></br>
 
 
     <div style="margin-left: 150px;" >
     <label for="hostgroup"><b>Hostgroup</b></label>
   <select  class="input" id="hostgroup" name="hg2">
+    <option ></option>
     <option value="mgt">Management-Node</option>
     <option value="mst">Master-Node</option>
     <option value="slv">Slave-Node</option>
@@ -81,16 +84,17 @@
     <option value="other">Other</option>
   </select>
     <label for="psw"><b>IP Address</b></label>
-    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip2">
+    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip2" minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" title="Invalid IP Address">
     
     <label for="psw"><b>IP FQDN</b></label>
-    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq2">
+    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq2" pattern="(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)" title="Invalid FQDN">
     </div></br>
     
 
     <div style="margin-left: 150px;" >
     <label for="hostgroup"><b>Hostgroup</b></label>
   <select  class="input" id="hostgroup" name="hg3">
+    <option ></option>
     <option value="mgt">Management-Node</option>
     <option value="mst">Master-Node</option>
     <option value="slv">Slave-Node</option>
@@ -98,15 +102,16 @@
     <option value="other">Other</option>
   </select>
     <label for="psw"><b>IP Address</b></label>
-    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip3">
+    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip3" minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" title="Invalid IP Address">
     
     <label for="psw"><b>IP FQDN</b></label>
-    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq3">
+    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq3" pattern="(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)" title="Invalid FQDN">
     </div></br>
 
     <div style="margin-left: 150px;" >
     <label for="hostgroup"><b>Hostgroup</b></label>
   <select  class="input" id="hostgroup" name="hg4">
+    <option ></option>
     <option value="mgt">Management-Node</option>
     <option value="mst">Master-Node</option>
     <option value="slv">Slave-Node</option>
@@ -114,15 +119,16 @@
     <option value="other">Other</option>
   </select>
     <label for="psw"><b>IP Address</b></label>
-    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip4">
+    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip4" minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" title="Invalid IP Address">
     
     <label for="psw"><b>IP FQDN</b></label>
-    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq4">
+    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq4" pattern="(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)" title="Invalid FQDN">
     </div></br>
 
     <div style="margin-left: 150px;" >
     <label for="hostgroup"><b>Hostgroup</b></label>
   <select  class="input" id="hostgroup" name="hg5">
+    <option ></option>
     <option value="mgt">Management-Node</option>
     <option value="mst">Master-Node</option>
     <option value="slv">Slave-Node</option>
@@ -130,15 +136,16 @@
     <option value="other">Other</option>
   </select>
     <label for="psw"><b>IP Address</b></label>
-    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip5">
+    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip5" minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" title="Invalid IP Address" >
     
     <label for="psw"><b>IP FQDN</b></label>
-    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq5">
+    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq5" pattern="(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)" title="Invalid FQDN">
     </div></br>
 
     <div style="margin-left: 150px;" >
     <label for="hostgroup"><b>Hostgroup</b></label>
   <select  class="input" id="hostgroup" name="hg6">
+    <option ></option>
     <option value="mgt">Management-Node</option>
     <option value="mst">Master-Node</option>
     <option value="slv">Slave-Node</option>
@@ -146,15 +153,16 @@
     <option value="other">Other</option>
   </select>
     <label for="psw"><b>IP Address</b></label>
-    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip6">
+    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip6" minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" title="Invalid IP Address">
     
     <label for="psw"><b>IP FQDN</b></label>
-    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq6">
+    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq6" pattern="(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)" title="Invalid FQDN">
     </div></br>
 
     <div style="margin-left: 150px;" >
     <label for="hostgroup"><b>Hostgroup</b></label>
   <select  class="input" id="hostgroup" name="hg7">
+    <option ></option>
     <option value="mgt">Management-Node</option>
     <option value="mst">Master-Node</option>
     <option value="slv">Slave-Node</option>
@@ -162,10 +170,10 @@
     <option value="other">Other</option>
   </select>
     <label for="psw"><b>IP Address</b></label>
-    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip7">
+    <input class="textbox" type="text" placeholder="Enter IP Address" name="ip7" minlength="7" maxlength="15" size="15" pattern="^((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$" title="Invalid IP Address">
     
     <label for="psw"><b>IP FQDN</b></label>
-    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq7">
+    <input  class="textbox" type="text" placeholder="Enter FQDN" name="fq7" pattern="(?=^.{1,254}$)(^(?:(?!\d+\.|-)[a-zA-Z0-9_\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)" title="Invalid FQDN">
     </div></br>
      
     <div>
@@ -176,5 +184,5 @@
 </form>
 <div style="background-color: darkslategray; height: 30px; width: 1420px; margin-top: 50px;">
 
-
 </body>
+</html>
