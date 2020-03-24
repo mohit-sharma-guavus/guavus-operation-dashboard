@@ -26,6 +26,7 @@ UPTIME=`cat /proc/uptime | awk '{print $1}'`
 UPTIME_INT=`echo ${UPTIME%.*}`
 FILE_VALUE=50
 IP_FORWARD_VALUE=`cat /proc/sys/net/ipv4/ip_forward`
+date_time=`date "+%Y-%m-%d_%H:%M"`
 
 #function green_echo() {
 #  echo -e "\x1b[1;32m$1\e[0m"
@@ -40,93 +41,94 @@ IP_FORWARD_VALUE=`cat /proc/sys/net/ipv4/ip_forward`
 
 if [  $UPTIME_INT -gt 21600  ]
 then
-   echo "PASSED - Uptime is more than 6hrs" >> /tmp/Checklist_PASSED.txt
+   echo "PASSED - Uptime > 6hrs" >> /tmp/Checklist_PASSED.txt
 else
-   echo "FAILED - Uptime is less than 6hrs" >> /tmp/Checklist_FAILED.txt
+   echo "FAILED - Uptime < 6hrs" >> /tmp/Checklist_FAILED.txt
 fi
 
 if [ $OS == $VERSION ]
 then
-	echo "PASSED - Linux-OSversion: ${OS} " >>  /tmp/Checklist_PASSED.txt
+	echo "PASSED -  ${OS} " >>  /tmp/Checklist_PASSED.txt
 else
-	echo "FAILED - Linux-OSversion:${OS} " >> /tmp/Checklist_FAILED.txt
+	echo "FAILED -  ${OS} " >> /tmp/Checklist_FAILED.txt
 fi
 
-echo "PASSED - Kernal-version: ${KV} " >> /tmp/Checklist_PASSED.txt
+echo "PASSED -  ${KV} " >> /tmp/Checklist_PASSED.txt
 
 if [ -z "$OPT_SIZE" ]
 then
-  echo "FAILED - /opt/repos Filesystem NOT FOUND"  >> /tmp/Checklist_FAILED.txt
+  echo "FAILED - /opt/repos FS NOT FOUND"  >> /tmp/Checklist_FAILED.txt
 else
   if [ `echo $OPT_SIZE` -gt 400 ]
   then
-	  echo "PASSED - /opt/repos Filesystem size:" ${OPT_SIZE} >> /tmp/Checklist_PASSED.txt
+	  echo "PASSED - /opt/repos FS size:" ${OPT_SIZE} >> /tmp/Checklist_PASSED.txt
   else
-	  echo "FAILED - /opt/repos Filesystem size:" ${OPT_SIZE} >> /tmp/Checklist_FAILED.txt
+	  echo "FAILED - /opt/repos FS size:" ${OPT_SIZE} >> /tmp/Checklist_FAILED.txt
   fi
 fi
 
 if [ $VAR_SIZE -ge $FILE_VALUE  ]
 then
-      echo "PASSED - /var/log Filesystem size: ${VAR_SIZE} " >> /tmp/Checklist_PASSED.txt
+      echo "PASSED - /var/log FS size: ${VAR_SIZE} " >> /tmp/Checklist_PASSED.txt
 else
-      echo "FAILED - /var/log Filesystem size: ${VAR_SIZE} " >> /tmp/Checklist_FAILED.txt
+      echo "FAILED - /var/log FS size: ${VAR_SIZE} " >> /tmp/Checklist_FAILED.txt
 fi
 
 if [ $ROOT_SIZE -ge $FILE_VALUE  ]
 then
-      echo "PASSED - / Filesystem size: ${ROOT_SIZE} " >> /tmp/Checklist_PASSED.txt
+      echo "PASSED - / FS size: ${ROOT_SIZE} " >> /tmp/Checklist_PASSED.txt
 else
-      echo "FAILED - / Filesystem size: ${ROOT_SIZE} " >> /tmp/Checklist_FAILED.txt
+      echo "FAILED - / FS size: ${ROOT_SIZE} " >> /tmp/Checklist_FAILED.txt
 fi
 
 echo "CPU : ${CPU} "  >> /tmp/Checklist_PASSED.txt
-echo "MEMORY in GB : ${MEM} " >> /tmp/Checklist_PASSED.txt
-echo "Interface Link MTU is : ${MTU} "  >> /tmp/Checklist_PASSED.txt
+echo "MEMORY : ${MEM} " >> /tmp/Checklist_PASSED.txt
+echo "Interface MTU is : ${MTU} "  >> /tmp/Checklist_PASSED.txt
 
 if [  $SWAP -eq 0 ]
 then
-    echo "PASSED - SWAP is off" >> /tmp/Checklist_PASSED.txt
+    echo "PASSED - SWAP off" >> /tmp/Checklist_PASSED.txt
 else
-    echo "FAILED - SWAP is Available" >> /tmp/Checklist_FAILED.txt
+    echo "FAILED - SWAP on" >> /tmp/Checklist_FAILED.txt
 fi
 
 if [  $SE_STATUS == "Disabled" -o  $SE_STATUS == "Permissive" ]
 then
-	echo "PASSED - Selinux off" >> /tmp/Checklist_PASSED.txt
+	echo "PASSED - Selinux Disabled" >> /tmp/Checklist_PASSED.txt
 else
-  echo "FAILED - Selinux is Enabled " >> /tmp/Checklist_FAILED.txt
+  echo "FAILED - Selinux Enabled " >> /tmp/Checklist_FAILED.txt
 fi
 
 systemctl status firewalld.service
 if [ $? -eq 0 ]
 then
-	echo "FAILED - Firewalld service is Active" >> /tmp/Checklist_FAILED.txt
+	echo "FAILED - Firewalld Active" >> /tmp/Checklist_FAILED.txt
 else
-  echo "PASSED - Firewalld service Stoped" >> /tmp/Checklist_PASSED.txt
+  echo "PASSED - Firewalld Stopped" >> /tmp/Checklist_PASSED.txt
 fi
 
 systemctl status ntpd.service
 if [ $? -eq 0 ]
 then
-  echo "PASSED - NTPD service is Configured" >> /tmp/Checklist_PASSED.txt
+  echo "PASSED - NTPD Configured" >> /tmp/Checklist_PASSED.txt
 else
-  echo "FAILED - NTPD is not Configured" >> /tmp/Checklist_FAILED.txt
+  echo "FAILED - NTPD not Configured" >> /tmp/Checklist_FAILED.txt
 fi
 
 if [ $IP_FORWARD_VALUE -eq 1 ]
 then
-  echo "PASSED - IP Forwarding is Enabled" >> /tmp/Checklist_PASSED.txt
+  echo "PASSED - IP Forwarding Enabled" >> /tmp/Checklist_PASSED.txt
 else
-  echo "FAILED - IP Forwarding is Disable" >> /tmp/Checklist_FAILED.txt
+  echo "FAILED - IP Forwarding Disable" >> /tmp/Checklist_FAILED.txt
 fi
 
 
-echo "################################################################" > /tmp/Checklist_"$HNAME"_"$day".txt
-echo "#################  $HNAME  ##################" >> /tmp/Checklist_"$HNAME"_"$day".txt
-echo "################################################################" >> /tmp/Checklist_"$HNAME"_"$day".txt
-echo "#################### PASSED CHECKS    ##########################" >> /tmp/Checklist_"$HNAME"_"$day".txt
+echo "######################################" > /tmp/Checklist_"$HNAME"_"$day".txt
+echo "$HNAME" >> /tmp/Checklist_"$HNAME"_"$day".txt
+echo "######################################" >> /tmp/Checklist_"$HNAME"_"$day".txt
+echo "$date_time" >> /tmp/Checklist_"$HNAME"_"$day".txt
+echo "########  PASSED CHECKS   ############" >> /tmp/Checklist_"$HNAME"_"$day".txt
 cat /tmp/Checklist_PASSED.txt >> /tmp/Checklist_"$HNAME"_"$day".txt
-echo "#################### FAILED CHECKS    ##########################" >> /tmp/Checklist_"$HNAME"_"$day".txt
+echo "######### FAILED CHECKS   ############" >> /tmp/Checklist_"$HNAME"_"$day".txt
 cat /tmp/Checklist_FAILED.txt >> /tmp/Checklist_"$HNAME"_"$day".txt
-echo "################################################################" >> /tmp/Checklist_"$HNAME"_"$day".txt
+echo "#######################################" >> /tmp/Checklist_"$HNAME"_"$day".txt

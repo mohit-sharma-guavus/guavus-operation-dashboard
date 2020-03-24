@@ -9,6 +9,7 @@ import os
 import sys
 import time
 from flaskext.mysql import MySQL
+from csv import reader
 
 
 #initialize the flask and SQL Objects
@@ -263,8 +264,57 @@ def checklist(clusterName):
             for item in data:
                 f.write("%s\n" % item)
         os.system("sh scripts/run.sh")
+        #Adding scripts output table in list of tuples
+        with open('scripts/reports/tabular_report.csv', 'r') as read_obj:
+            csv_reader = reader(read_obj)
+            list_of_lists = list(map(list, csv_reader))
+#            print(list_of_lists)
+        #Now put tuple value to the Tables
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT  cluster_id, host_id FROM `%s`", (clusterName))
+        data = cursor.fetchall()
+        data1 = list(data)
+        cursor.execute("SELECT count(cluster_id) FROM `%s`", (clusterName))
+        host_count = cursor.fetchone()[0]
+        print(host_count)
+#        int_host_count = int(host_count[0])
+        print(data1)
+        check_table_name = clusterName + "_checklist" 
+        for i in range(6):
+            list_of_lists[i].insert(0, check_table_name)
+        print(list_of_lists)
+        list_of_tuples = [tuple(l) for l in list_of_lists]
+        print(list_of_tuples)
+        t1 = list_of_tuples[0]
+        t2 = list_of_tuples[1]
+        t3 = list_of_tuples[2]
+        t4 = list_of_tuples[3]
+        t5 = list_of_tuples[4]
+        t6 = list_of_tuples[5]
+        print(t1)
+        tuple_check_table_name = ( check_table_name )
+        list_check_table_name = [tuple_check_table_name,]*host_count
+        print(list_check_table_name)
+        conn1 = mysql.get_db()
+        cur = conn1.cursor()
+        cur.execute("CREATE TABLE IF NOT EXISTS `%s`(cluster_id VARCHAR(200), host_id VARCHAR(200), host_fqdn VARCHAR(200) NOT NULL, timestamp VARCHAR(200) NOT NULL, uptime VARCHAR(200), os_version VARCHAR(200), kernel_version VARCHAR(200), disk_util_opt VARCHAR(200), disk_util_var VARCHAR(200), disk_util_root VARCHAR(200), core VARCHAR(200), memory VARCHAR(200), mtu VARCHAR(200), swap VARCHAR(200), selinux VARCHAR(200) , firewall VARCHAR(200) , ntpd VARCHAR(200) , IP_forwarding VARCHAR(200))", (check_table_name))
+#        cur.executemany("INSERT INTO `%s`( host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", list_of_tuples)
+        cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", t1)
+        cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", t2)
+        cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", t3)
+        cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", t4)
+        cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", t5)
+        cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", t6)
+        conn1.commit()
+        conn1.close()
         print("Running Check List!!")
-        return render_template("checklist.html", name=clusterName)
+        # Now get the data and put in table
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding FROM `%s` ORDER BY timestamp DESC LIMIT 6", (check_table_name))
+        data = cursor.fetchall()
+        return render_template("checklist.html", value=data, name=clusterName)
 
 @app.route("/return-file")
 def get_csv():
