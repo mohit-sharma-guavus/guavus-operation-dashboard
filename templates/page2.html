@@ -20,37 +20,69 @@ tr:nth-child(odd) {
   background-color: #dddddd;
 }
 </style>
-</style>
 
 <body style="background-color: floralwhite;">
 
-  <div style="background-color: darkslategray; height: 60px; width: 1420px;">
-    <img src="Logo_Dashboard.png" style="height: 60px; width: 150px;">
+  <div style="background-color: #0c1731; height: 60px; width: 100%;">
+    <img src="../static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
   </div>
 
-  <div style="margin-top: 100px;">
-<table>
-  <thead>
+  <div style="margin-top: 60px">
+  <h2> Hosts </h2>
+  <table>
+    <thead>
     <tr>
-      <th>Hostgroup</th>
-      <th>Host IP</th>
-      <th>Host FQDN</th>
-      <th>Host Liveliness</th>    
+      <th>Cluster ID</th>
+      <th>Cluster Name</th>
+      <th>host_id</th>
+      <th>hostgroup</th>
+      <th>host_IP</th>
+      <th>host_fqdn</th>
+      <th>host_live</th>
     </tr>
-</thead>
-<tbody>
-  {% for row in value %}
-  <tr>
-    <td>{{ row[0] }} </td>
-    <td>{{ row[1] }}</td>
-    <td>{{ row[2] }}</td>
-    <td>{{ row[3] }}</td>    
-  </tr>
-  {% endfor %}
-</tbody>
-</table>
+    </thead>
+    <tbody>
+      {% for row in value %}
+      <tr>
+          <td>{{ row[0] }}</td>
+          <td>{{ row[1] }}</td>
+          <td>{{ row[2] }}</td>
+          <td>{{ row[3] }}</td>
+          <td>{{ row[4] }}</td>
+          <td>{{ row[5] }}</td>
+          <td>{{ row[6] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
-<div style="background-color: darkslategray; height: 30px; width: 1420px; margin-top: 460px;">
+
+  <!--div style="margin-top: 100px;">
+<table>
+  <tr>
+    <th>Hostgroup</th>
+    <th>Host IP</th>
+    <th>Host FQDN</th>
+    <th>Host Liveliness</th>    
+  </tr>
+  <tr>
+    <td>managment-node</td>
+    <td>192.168.134.183</td>
+    <td>reflex003-mgt-01.cloud.guavus.com</td>
+    <td></td>    
+  </tr>
+  <tr>
+    <td>managment-node</td>
+    <td>192.168.134.183</td>
+    <td>reflex003-mgt-01.cloud.guavus.com</td>
+    <td></td>    
+  </tr>
+</table>
+</div-->
+<div class="container" align="left">
+<a href="/return-file/" target="blank"><button class="btn btn-default">Download</button></a>
+</div>
+<div style="background-color: #0c1731; height: 30px; width: 100%; margin-top: 460px;">
     </div>
 </body>
 </html>

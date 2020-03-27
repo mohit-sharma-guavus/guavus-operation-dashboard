@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+<body>
+
+<p><button>Run</button></p>
+<button class="first" style="display: none">button 1</button>
+
+<script>
+$( "button" ).click(function() {
+  $( "button.first" ).slideUp( 300 ).delay( 1000 ).fadeIn( 400 );
+});
+</script>
+
+</body>
+</html>

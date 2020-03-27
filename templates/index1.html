@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: white;
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-bottom: 650px;
+}
+.textbox{
+  width: 300px;
+  height: 40px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  resize: none;
+}
+
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+
+<body style="background-color: floralwhite;">
+ 
+  
+
+  <div style="background-color: #0c1731; height: 60px; width: 100%;">
+    <img src="../static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                <span>{{ message }}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div style="margin-top: 30px;">
+    <label for="search"><b>Search Cluster</b></label>
+    <input class="textbox" type="text" placeholder="Search Cluster">
+    <button type="submit" style="height: 40px; width: 200px; margin-left: 160px; margin-left: 100px; background-color: #4CAF50;  border-radius: 4px;"><b>Search</b></button><br>
+  </div>
+
+<div style="margin-top: 60px">
+  <h2>Current Available Cluster  </h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Cluster ID</th>
+      <th>Cluster Name</th>
+      <th>Cluster Description</th>
+      <th>Cluster Date</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for row in value %}
+      <tr>
+          <td>{{ row[0] }}</td>
+          <td><a href='/{{ row[1] }}/hosts'> {{ row[1] }} </a></td>
+          <td>{{ row[2] }}</td>
+          <td>{{ row[3] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<a href ='/add_cluster'><img class="open-button" src="/static/plus_icon.png"></a>
+
+<div style="background-color: #0c1731; height: 30px; width: 100%; margin-top: 460px;"></div>
+
+</body>
+</html>

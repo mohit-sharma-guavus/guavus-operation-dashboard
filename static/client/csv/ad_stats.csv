@@ -1,0 +1,13 @@
+cell_id,mos_scaled,csr_scaled,cssr_scaled,gcr_scaled,setuptime_scaled,z_score,agg_timestamp,geo_coord,jio_centre,circle,city,r4g_state,year,month,day,hour,minute,test_flag
+1234,10,12,12,131,21,10.1,20181029150000,"[log,lat]",centre_test,circle_test,city_test,state_test,2018,10,29,15,0,0
+1234,10,12,12,131,21,9.1,20181105150000,"[log,lat]",centre_test,circle_test,city_test,state_test,2018,11,5,15,0,0
+1234,10,12,12,131,21,11.1,20181112150000,"[log,lat]",centre_test,circle_test,city_test,state_test,2018,11,12,15,0,0
+1234,10,12,12,131,21,14.1,20181119150000,"[log,lat]",centre_test,circle_test,city_test,state_test,2018,11,19,15,0,0
+1234,10,12,12,131,21,12.1,20181126150000,"[log,lat]",centre_test,circle_test,city_test,state_test,2018,11,26,15,0,0
+1234,10,12,12,131,21,4.1,20181203150000,"[log,lat]",centre_test,circle_test,city_test,state_test,2018,12,3,15,0,1
+1235,10,12,12,131,21,10.1,20181029150000,"[log,lat]",centre1_test,circle_test,city_test,state_test,2018,11,29,15,0,0
+1235,10,12,12,131,21,10.1,20181105150000,"[log,lat]",centre1_test,circle_test,city_test,state_test,2018,11,5,15,0,0
+1235,10,12,12,131,21,10.1,20181112150000,"[log,lat]",centre1_test,circle_test,city_test,state_test,2018,11,12,15,0,0
+1235,10,12,12,131,21,10.1,20181119150000,"[log,lat]",centre1_test,circle_test,city_test,state_test,2018,11,19,15,0,0
+1235,10,12,12,131,21,10.1,20181126150000,"[log,lat]",centre1_test,circle_test,city_test,state_test,2018,11,26,15,0,0
+1235,10,12,12,131,21,12,20181203150000,"[log,lat]",centre1_test,circle_test,city_test,state_test,2018,12,3,15,0,1
