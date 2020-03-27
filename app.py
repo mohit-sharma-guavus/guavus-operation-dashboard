@@ -4,12 +4,15 @@ Created on @ 2020
 @author: 
 """
 #imports
-from flask import Flask, render_template, json, request, session, redirect, url_for, send_file, send_from_directory, safe_join, abort, flash
+from flask import Flask, render_template, json, request, session, redirect, url_for, send_file, send_from_directory, safe_join, abort, flash, Response
 import os
 import sys
 import time
 from flaskext.mysql import MySQL
 from csv import reader
+import io
+import csv
+import pymysql
 
 
 #initialize the flask and SQL Objects
@@ -43,6 +46,87 @@ def home():
     except Exception as e:
         return render_template("homepage.html")
 """
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    # Output message if something goes wrong...
+    msg = ''
+    # Check if "uname" and "psw" POST requests exist (user submitted form)
+    if request.method == 'POST' and 'uname' in request.form and 'psw' in request.form:
+        # Create variables for easy access
+        username = request.form['uname']
+        password = request.form['psw']
+        # Check if account exists using MySQL
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password))
+        # Fetch one record and return result
+        account = cursor.fetchone()
+        print(account)
+        print(account[0])
+        # If account exists in accounts table in out database
+        if account:
+            # Create session data, we can access this data in other routes
+            """
+            session['loggedin'] = True
+            session['id'] = account[0]
+            session['username'] = account[1]
+            """
+            # Redirect to home page
+            return redirect(url_for('clusters'))
+        else:
+            # Account doesnt exist or username/password incorrect
+            msg = 'Incorrect username/password!'
+    # Show the login form with message (if any)
+    return render_template('login.html', msg=msg)
+
+@app.route('/login/register', methods=['GET', 'POST'])
+def register():
+    # Output message if something goes wrong...
+    msg = ''
+    # Check if "username", "password" and "email" POST requests exist (user submitted form)
+    if request.method == 'POST' and 'uname' in request.form and 'psw' in request.form and 'email' in request.form:
+        # Create variables for easy access
+        username = request.form['uname']
+        password = request.form['psw']
+        email = request.form['email']
+        # Check if account exists using MySQL
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM accounts WHERE username = %s', (username))
+        account = cursor.fetchone()
+        # If account exists show error and validation checks
+        if account:
+            msg = 'Account already exists!'
+        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+            msg = 'Invalid email address!'
+        elif not re.match(r'[A-Za-z0-9]+', username):
+            msg = 'Username must contain only characters and numbers!'
+        elif not username or not password or not email:
+            msg = 'Please fill out the form!'
+        else:
+            # Account doesnt exists and the form data is valid, now insert new account into accounts table
+            conn = mysql.get_db()
+            cursor = conn.cursor()
+            cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s)', (username, password, email))
+            conn.commit()
+            conn.close()
+            msg = 'You have successfully registered!'
+    elif request.method == 'POST':
+        # Form is empty... (no POST data)
+        msg = 'Please fill out the form!'
+    # Show registration form with message (if any)
+    return render_template('login.html', msg=msg)
+
+@app.route('/login/logout')
+def logout():
+    # Remove session data, this will log the user out
+   session.pop('loggedin', None)
+   session.pop('id', None)
+   session.pop('username', None)
+   # Redirect to login page
+   return redirect(url_for('login'))
+
 @app.route('/')
 def clusters():
     try:
@@ -316,14 +400,85 @@ def checklist(clusterName):
         data = cursor.fetchall()
         return render_template("checklist.html", value=data, name=clusterName)
 
-@app.route("/return-file")
-def get_csv():
+
+@app.route("/<clusterName>/checklist/reports")
+def show_reports(clusterName):
+    print("Showing reports!")
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    tableName=clusterName + '_checklist'
+    cursor.execute("SELECT DISTINCT timestamp FROM `%s`", (tableName))
+    data = cursor.fetchall()
+    return render_template("checklist_reports.html", value=data, name=clusterName)
+
+
+@app.route("/<clusterName>/return-file")
+def download_report(clusterName):
+    conn = None
+    cursor = None
     try:
-        return send_from_directory(
-            app.config["CLIENT_CSV"], filename="Checklist_All_Host.txt", as_attachment=True
-            )
-    except FileNotFoundError:
-        abort(404)
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        check_table_name = clusterName + "_checklist"
+        cursor.execute("SELECT host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, "
+                       "disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, "
+                       "IP_forwarding FROM `%s` ORDER BY timestamp DESC LIMIT 6", (check_table_name))
+        result = cursor.fetchall()
+
+        output = io.StringIO()
+        writer = csv.writer(output)
+
+        line = ['host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, '
+                'disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding']
+        writer.writerow(line)
+
+        for row in result:
+            line = [row[0] + ',' + row[1] + ',' + row[2] + ',' + row[3] + ',' + row[4] + ',' + row[5] + ',' + row[6] + ',' + row[7] + ',' + row[8] + ',' + row[9] + ',' + row[10] + ',' + row[11] + ',' + row[12] + ',' + row[13] + ',' + row[14] + ',' + row[15]]
+            writer.writerow(line)
+
+        output.seek(0)
+
+        return Response(output, mimetype="text/csv",
+                        headers={"Content-Disposition": "attachment;filename=checklist_report.csv"})
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route("/<clusterName>/<timestamp>/return-file")
+def download_past_report(clusterName,timestamp):
+    conn = None
+    cursor = None
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        check_table_name = clusterName + "_checklist"
+        cursor.execute("SELECT host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, "
+                       "disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, "
+                       "IP_forwarding FROM `%s` WHERE timestamp LIKE %s", (check_table_name, timestamp))
+        result = cursor.fetchall()
+
+        output = io.StringIO()
+        writer = csv.writer(output)
+
+        line = ['host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, '
+                'disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding']
+        writer.writerow(line)
+
+        for row in result:
+            line = [row[0] + ',' + row[1] + ',' + row[2] + ',' + row[3] + ',' + row[4] + ',' + row[5] + ',' + row[6] + ',' + row[7] + ',' + row[8] + ',' + row[9] + ',' + row[10] + ',' + row[11] + ',' + row[12] + ',' + row[13] + ',' + row[14] + ',' + row[15]]
+            writer.writerow(line)
+
+        output.seek(0)
+
+        return Response(output, mimetype="text/csv",
+                        headers={"Content-Disposition": "attachment;filename=checklist_report.csv"})
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
 
 if __name__ == "__main__":
     app.run()

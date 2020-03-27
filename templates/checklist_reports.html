@@ -7,7 +7,7 @@
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
-  width: 100%;
+  width: auto;
   white-space: nowrap;
   overflow-x:auto;
 }
@@ -53,6 +53,17 @@ border: 2px solid #4CAF50;
   background-color: floralwhite;
   color: #4CAF50;
 }
+
+.download{
+background-color: #4CAF50;
+border-radius: 4px;
+border: 2px solid #4CAF50;
+}
+
+.download:hover{
+  background-color: floralwhite;
+  color: #4CAF50;
+}
 </style>
 
 <body style="background-color: floralwhite;">
@@ -70,68 +81,27 @@ border: 2px solid #4CAF50;
 <p style="font-family: Optima, sans-serif; margin-top: 40px">CLUSTER NAME: "{{ name }}"</p>
 
 <div style="margin-top: 100px;">
-<h1 style="font-family: Optima, sans-serif;">Press Download button to Download Report for {{ name }} cluster!</h1>
+<h1 style="font-family: Optima, sans-serif;">Past checklist reports for {{ name }} cluster!</h1>
 </div>
 
-
-
-
-
-  <div style="overflow-x:auto">
-<table style="font-family: Optima, sans-serif;">
+  <table style="font-family: Optima, sans-serif;">
   <thead>
     <tr>
-      <th>Serial number</th>
-      <th>Hosts</th>
-      <th>Checklist Run Time</th>
-      <th>Host Uptime</th>
-      <th>OS Version</th>
-      <th>Kernel Version</th>
-      <th>/opt FS Use</th>
-      <th>/var FS Use</th>
-      <th>Root FS Use</th>
-      <th>Total CPU</th>
-      <th>Total Memory</th>
-      <th>MTU</th>
-      <th>SWAP Status</th>
-      <th>Selinux Status</th>
-      <th>Firewall Status</th>
-      <th>NTPD Status</th>
-      <th>IP_forwarding Status</th>
-      <th></th>     
+      <th>Reports</th>
+      <th>Options</th>
     </tr>
 </thead>
 <tbody>
   {% for row in value %}
   <tr>
-    <td></td>
     <td>{{ row[0] }} </td>
-    <td>{{ row[1] }}</td>
-    <td>{{ row[2] }}</td>
-    <td>{{ row[3] }}</td>
-    <td>{{ row[4] }}</td>
-    <td>{{ row[5] }}</td>
-    <td>{{ row[6] }}</td>
-    <td>{{ row[7] }} </td>
-    <td>{{ row[8] }}</td>
-    <td>{{ row[9] }}</td>
-    <td>{{ row[10] }}</td>
-    <td>{{ row[11] }}</td>
-    <td>{{ row[12] }}</td>
-    <td>{{ row[13] }}</td>
-    <td>{{ row[14] }}</td>
-    <td>{{ row[15] }}</td>
-    <td>{{ row[16] }}</td>
+    <td><a href='/{{ name }}/{{ row[0] }}/return-file'><button type="submit" class="download" >Download Report</button></a></td>
   </tr>
   {% endfor %}
 </tbody>
 </table>
-</div>
 
-  <div class="download" align="left">
-    <a href="/{{ name }}/return-file" target="blank"><button class="button" >Export as csv</button></a>
-    <a href="/{{ name }}/checklist/reports" target="blank"><button class="button" >View Past 10 Reports</button></a>
-  </div>
+
 
 
 <div style="background-color: #0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
