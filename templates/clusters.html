@@ -86,20 +86,23 @@ border: 2px solid #4CAF50;
 
 <body style="background-color: floralwhite;">
  
-  
-
+ 
   <div style="background-color: #0c1731; height: 60px; width: 100%;">
     <img src="/static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
   </div>
   <div style="margin-top: 10px; margin-left: 10px; position: absolute;">
     <a href="/" target="blank"><button class="button">Home</button></a>
   </div>
-  <div style="margin-top: 30px;">
-    
-    <label for="search" style="font-family: Optima, sans-serif;"><b>Search Cluster</b></label>
-    <input class="textbox" type="text" placeholder="Search Cluster">
-    <button class="search" type="submit" ><b>Search</b></button><br>
-  </div>
+  
+  <form method="post" action="/search" style="margin-top: 50px;">  
+    <label for="search" style="font-family: Optima, sans-serif;"><b>Search Cluster:</b></label>
+    <input class="textbox" type="text" placeholder="Search Cluster" name="search" value="{{ request.form.search}}">
+    <button class="search" type="submit"><b>Search</b></button><br>
+  </form>
+
+  {% if error %}
+         <p><strong>Message:</strong> {{ error }}
+  {% endif %}
 
 <div style="margin-top: 60px">
 <table>
@@ -108,8 +111,8 @@ border: 2px solid #4CAF50;
       <th>Serial number</th>
       <th>Cluster Name</th>
       <th>Cluster Description</th>
-      <th>Cluster Date</th>
-      <th></th>
+      <th>Cluster Creation Date</th>
+      <th>Options</th>
     </tr> 
   </thead>
   <tbody>
@@ -119,16 +122,15 @@ border: 2px solid #4CAF50;
         <td><a href='/{{ row[0] }}/home'> {{ row[0] }} </a></td>
         <td>{{ row[1] }}</td>
         <td>{{ row[2] }}</td>
-        <td> <button class="delete "type="submit"><b>Delete Cluster</b></button></td>
+        <td><a href='/{{ row[0] }}/delete_cluster' onclick="return confirm('Are you sure you want to delete?')"><button type="submit" class="delete" >Delete Cluster</button></a></td>
     </tr>
     {% endfor %}
   </tbody>  
 </table>
 </div>
+
 <a href = "{{ url_for('add_cluster') }}"><img class="open-button" src="/static/plus_icon.png"></a>
-
-
-<div style="background-color: #0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
+<div style="background-color:#0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
 
 </body>
 </html>

@@ -11,12 +11,23 @@ table {
   width: 100%;
 }
 
+
 td, th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
 }
 
+body
+{
+    counter-reset: Serial;           /* Set the Serial counter to 0 */
+}
+
+tr td:first-child:before
+{
+  counter-increment: Serial; /* Increment the Serial counter */
+  content: counter(Serial); /* Display the counter */
+}
 
 .open-button {
   background-color: white;
@@ -54,17 +65,22 @@ border: 2px solid #4CAF50;
 
   <div style="margin-top: 10px; margin-left: 10px; position: absolute;">
     <a href="/" target="blank"><button class="button">Home</button></a>
-    <a href="/clusters" target="blank"><button class="button">Clusters</button></a>
+    <a href="/{{ name }}/home" target="blank"><button class="button">Menu</button></a>
   </div>
   <div>
-    <a href = "addhost.html"><img class="open-button" src="/static/plus_icon.png"></a>
+    <a href = "/{{ name }}/add_host"><img class="open-button" src="/static/plus_icon.png"></a>
   </div>
   <div style="margin-top: 100px;">
+<p style="font-family: Optima, sans-serif; margin-top: 40px">CLUSTER NAME: "{{ name }}"</p>
 <h1 style="font-family: Optima, sans-serif;">Host Detail</h1>
-<p style="font-family: Optima, sans-serif;">{{ name }} Cluster Host Detail!</p>
+
+
+
+
 <table style="font-family: Optima, sans-serif;">
   <thead>
     <tr>
+      <th>Serial number</th>
       <th>Hostgroup</th>
       <th>Host IP</th>
       <th>Host FQDN</th>
@@ -75,23 +91,24 @@ border: 2px solid #4CAF50;
 <tbody>
   {% for row in value %}
   <tr>
+    <td></td>
     <td>{{ row[0] }} </td>
     <td>{{ row[1] }}</td>
     <td>{{ row[2] }}</td>
     <td>{{ row[3] }}</td>
-    <td><button type="submit" class="delete" >Delete Host</button></td>
+    <td><a href='/{{ name }}/{{ row[1] }}/delete_host' onclick="return confirm('Are you sure you want to delete?')"> <button type="submit" class="delete" >Delete Host</button> </a></td>
   </tr>
   {% endfor %}
 </tbody>
 </table>
 </div>
+<br>
 <div class="run" align="center">
-  <a href="/{{ name }}/checklist" target="blank"><button class="btn btn-default">Run Checklist</button></a>
-  </div>
+  <a href="/{{ name }}/checklist" target="blank"><button class="delete">Run Checklist</button></a>
+</div>
 
-  <div class="download" align="center">
-    <a href="/return-file" target="blank"><button class="btn btn-default" >Download</button></a>
-  </div>
+
+
 
 
 <div style="background-color: #0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
