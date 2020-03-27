@@ -19,6 +19,11 @@ td, th {
   padding: 8px;
 }
 
+body
+{
+    counter-reset: Serial;           /* Set the Serial counter to 0 */
+}
+
 tr td:first-child:before
 {
   counter-increment: Serial; /* Increment the Serial counter */
