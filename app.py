@@ -19,6 +19,7 @@ import re
 # initialize the flask and SQL Objects
 app = Flask(__name__)
 mysql = MySQL()
+app.secret_key = 'your secret key'
 
 # configure MYSQL
 app.config['MYSQL_DATABASE_USER'] = 'root'
@@ -49,7 +50,7 @@ def home():
 """
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     # Output message if something goes wrong...
     msg = ''
@@ -65,15 +66,13 @@ def login():
         # Fetch one record and return result
         account = cursor.fetchone()
         print(account)
-        print(account[0])
+        print(account[1])
         # If account exists in accounts table in out database
         if account:
             # Create session data, we can access this data in other routes
-            """
             session['loggedin'] = True
             session['id'] = account[0]
             session['username'] = account[1]
-            """
             # Redirect to home page
             return redirect(url_for('clusters'))
         else:
@@ -82,17 +81,17 @@ def login():
     # Show the login form with message (if any)
     return render_template('login.html', msg=msg)
 
-
-@app.route('/login/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     # Output message if something goes wrong...
     msg = ''
     # Check if "username", "password" and "email" POST requests exist (user submitted form)
-    if request.method == 'POST' and 'uname' in request.form and 'psw' in request.form and 'email' in request.form:
+    if request.method == 'POST':
         # Create variables for easy access
-        username = request.form['uname']
-        password = request.form['psw']
-        email = request.form['email']
+        username=request.form['uname']
+        password=request.form['psw']
+        email=request.form['email']
+        print(username)
         # Check if account exists using MySQL
         conn = mysql.connect()
         cursor = conn.cursor()
@@ -115,41 +114,42 @@ def register():
             conn.commit()
             conn.close()
             msg = 'You have successfully registered!'
+            return render_template("login.html", msg=msg)
     elif request.method == 'POST':
         # Form is empty... (no POST data)
         msg = 'Please fill out the form!'
     # Show registration form with message (if any)
-    return render_template('login.html', msg=msg)
-
+    return render_template('register.html', msg=msg)
 
 @app.route('/login/logout')
 def logout():
     # Remove session data, this will log the user out
-    session.pop('loggedin', None)
-    session.pop('id', None)
-    session.pop('username', None)
-    # Redirect to login page
-    return redirect(url_for('login'))
-
+   session.pop('loggedin', None)
+   session.pop('id', None)
+   session.pop('username', None)
+   # Redirect to login page
+   return redirect(url_for('login'))
 
 @app.route('/')
 def clusters():
-    try:
-        print("Showing Clusters!!")
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("SELECT cluster_name,cluster_desc,cluster_creation_date FROM cluster_info")
-        data = cursor.fetchall()
-        return render_template("clusters.html", value=data)
-    except Exception as e:
-        return render_template("clusters_fresh.html", error=str(e))
-
+    if 'loggedin' in session:
+        try:
+            print("Showing Clusters!!")
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute("SELECT cluster_name,cluster_desc,cluster_creation_date FROM cluster_info")
+            data = cursor.fetchall()
+            return render_template("clusters.html", value=data, username=session['username'])
+        except Exception as e:
+            return render_template("clusters_fresh.html", error = str(e))
+    return redirect(url_for('login'))
 
 @app.route('/<cluster_name>/home')
 def home(cluster_name):
-    print("Showing Homepage")
-    return render_template("homepage.html", name=cluster_name)
-
+    if 'loggedin' in session:
+        print("Showing Homepage")
+        return render_template("homepage.html", name=cluster_name)
+    return redirect(url_for('login'))
 
 @app.route('/inprogress')
 def inprogress():

@@ -6,9 +6,9 @@
 
 </style>
 
-<body style="background-color: #fff;">
+<body style="background-color: floralwhite;">
 
-  <div style="background-color: #0c1731; height: 60px; width: 1420px;">
+  <div style="background-color: #25373E; height: 60px; width: 1420px;">
     <img src="/static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
   </div>
   <div style="margin-top: 10px; margin-left: 10px; position: absolute;">
@@ -19,6 +19,6 @@
 </div>
 
 
-<div style="background-color: #0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
+<div style="background-color: #25373E; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
 </body>
 </html>

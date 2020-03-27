@@ -46,18 +46,117 @@ tr td:first-child:before
 }
 
 .delete{
-background-color: #4CAF50;
+background-color: #4EA3E2;
 border-radius: 4px;
-border: 2px solid #4CAF50;
+border: 2px solid #4EA3E2;
 }
 
 .delete:hover{
-  background-color: floralwhite;
-  color: #4CAF50;
+  background-color: #1A2855;
+  color: white;
+}
+.home-button {
+  background-color: white;
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3%;
+  right: 28px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  left: 76%;
+}
+.profile-button {
+  background-color: white;
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3%;
+  right: 28px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  left: 83%;
+}
+.logout-button {
+  background-color: white;
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3%;
+  right: 28px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  left: 90%;
+}
+.hometext {
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3.5%;
+  right: 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  left: 73%;
+}
+.profiletext {
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3.5%;
+  right: 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  left: 79.5%;
+}
+.logouttext {
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3.5%;
+  right: 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  left: 86.5%;
+}
+.plustext {
+  color: black;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 14%;
+  right: 28px;
+  border-radius: 50%;
+  left: 90%;
 }
 </style>
 
-<body style="background-color: floralwhite;">
+<body style="background-color: #fff;">
 
   <div style="background-color: #0c1731; height: 60px; width: 100%;">
     <img src="/static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
@@ -68,7 +167,8 @@ border: 2px solid #4CAF50;
     <a href="/{{ name }}/home" target="blank"><button class="button">Menu</button></a>
   </div>
   <div>
-    <a href = "/{{ name }}/add_host"><img class="open-button" src="/static/plus_icon.png"></a>
+    <label class="plustext">Add Host</label>
+    <a href = "/{{ name }}/add_host"><img class="open-button" src="/static/plus.png"></a>
   </div>
   <div style="margin-top: 100px;">
 <p style="font-family: Optima, sans-serif; margin-top: 40px">CLUSTER NAME: "{{ name }}"</p>
@@ -109,7 +209,12 @@ border: 2px solid #4CAF50;
 
 
 
-
+<label class="hometext">Home</label>
+<a href = "/"><img class="home-button" src="/static/home.png"></a>
+<label class="profiletext">Profile</label>
+<a href = "/"><img class="profile-button" src="/static/profile.png"></a>
+<label class="logouttext">Logout</label>
+<a href = "{{ url_for('logout') }}"><img class="logout-button" src="/static/logout.png"></a>
 
 <div style="background-color: #0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
 </body>
