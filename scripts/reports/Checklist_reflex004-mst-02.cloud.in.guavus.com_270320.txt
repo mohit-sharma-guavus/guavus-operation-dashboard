@@ -1,0 +1,16 @@
+reflex004-mst-02.cloud.in.guavus.com
+2020-03-27_08:39
+PASSED - Uptime > 6hrs
+PASSED -  7.6.1810 
+PASSED -  3.10.0-957.21.3.el7.x86_64 
+FAILED - /opt/repos FS NOT FOUND
+FAILED - /var/log FS size: 30 
+PASSED - / FS size: 70 
+CPU : 12 
+MEMORY : 41 
+Interface MTU is :  
+PASSED - SWAP off
+FAILED - Selinux Enabled 
+PASSED - Firewalld Stopped
+FAILED - NTPD not Configured
+FAILED - IP Forwarding Disable
