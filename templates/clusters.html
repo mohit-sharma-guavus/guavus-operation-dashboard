@@ -20,6 +20,106 @@
   height: 40px;
   border-radius: 50%;
 }
+
+.home-button {
+  background-color: white;
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3%;
+  right: 28px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  left: 76%;
+}
+.profile-button {
+  background-color: white;
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3%;
+  right: 28px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  left: 83%;
+}
+.logout-button {
+  background-color: white;
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3%;
+  right: 28px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  left: 90%;
+}
+.hometext {
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3.5%;
+  right: 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  left: 73%;
+}
+.profiletext {
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3.5%;
+  right: 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  left: 79.5%;
+}
+.logouttext {
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3.5%;
+  right: 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  left: 86.5%;
+}
+.plustext {
+  color: black;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 16%;
+  right: 28px;
+  border-radius: 50%;
+  left: 89%;
+}
 .textbox{
   width: 300px;
   height: 40px;
@@ -88,10 +188,7 @@ border: 2px solid #4CAF50;
  
  
   <div style="background-color: #0c1731; height: 60px; width: 100%;">
-    <img src="/static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
-  </div>
-  <div style="margin-top: 10px; margin-left: 10px; position: absolute;">
-    <a href="/" target="blank"><button class="button">Home</button></a>
+    <img src="Logo_Dashboard.png" style="height: 60px; width: 150px;">
   </div>
   
   <form method="post" action="/search" style="margin-top: 50px;">  
@@ -128,8 +225,15 @@ border: 2px solid #4CAF50;
   </tbody>  
 </table>
 </div>
+<label class="hometext">Home</label>
+<a href = "/"><img class="home-button" src="home.png"></a>
+<label class="profiletext">Profile</label>
+<a href = "/"><img class="profile-button" src="profile.png"></a>
+<label class="logouttext">Logout</label>
+<a href = "/"><img class="logout-button" src="logout.png"></a>
 
-<a href = "{{ url_for('add_cluster') }}"><img class="open-button" src="/static/plus_icon.png"></a>
+<label class="plustext">Add Cluster</label>
+<a href = "{{ url_for('add_cluster') }}"><img class="open-button" src="plus.png"></a>
 <div style="background-color:#0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
 
 </body>

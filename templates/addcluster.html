@@ -38,6 +38,105 @@
   background-color: floralwhite;
   color: #4CAF50;
 }
+.home-button {
+  background-color: white;
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3%;
+  right: 28px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  left: 76%;
+}
+.profile-button {
+  background-color: white;
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3%;
+  right: 28px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  left: 83%;
+}
+.logout-button {
+  background-color: white;
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3%;
+  right: 28px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  left: 90%;
+}
+.hometext {
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3.5%;
+  right: 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  left: 73%;
+}
+.profiletext {
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3.5%;
+  right: 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  left: 79.5%;
+}
+.logouttext {
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 3.5%;
+  right: 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  left: 86.5%;
+}
+.plustext {
+  color: black;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  top: 16%;
+  right: 28px;
+  border-radius: 50%;
+  left: 89%;
+}
 
 </style>
 </head>
@@ -49,9 +148,7 @@
 <div style="background-color: #0c1731; height: 60px; width: 100%;">
     <img src="/static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
   </div>
-  <div style="margin-top: 10px; margin-left: 10px; position: absolute;">
-    <a href="/" target="blank"><button class="button">Home</button></a>
-  </div>
+
 
   <br>
   <br>
@@ -194,6 +291,12 @@
     <button type="submit" class="submit-btn" style="">Submit</button><br>
 </div>
 
+<label class="hometext">Home</label>
+<a href = "/"><img class="home-button" src="/static/home.png"></a>
+<label class="profiletext">Profile</label>
+<a href = "/"><img class="profile-button" src="/static/profile.png"></a>
+<label class="logouttext">Logout</label>
+<a href = "/"><img class="logout-button" src="/static/logout.png"></a>
 
 </form>
 <div style="background-color:#0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
