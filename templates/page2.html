@@ -1,14 +1,16 @@
+
 <!DOCTYPE html>
 <html>
 <head>
 
 <style>
 
-  table {
+table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
+
 
 td, th {
   border: 1px solid #dddddd;
@@ -16,73 +18,99 @@ td, th {
   padding: 8px;
 }
 
-tr:nth-child(odd) {
-  background-color: #dddddd;
+body
+{
+    counter-reset: Serial;           /* Set the Serial counter to 0 */
+}
+
+tr td:first-child:before
+{
+  counter-increment: Serial; /* Increment the Serial counter */
+  content: counter(Serial); /* Display the counter */
+}
+
+.open-button {
+  background-color: white;
+  color: white;
+  padding: 2px 2px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-bottom: 650px;
+}
+
+.delete{
+background-color: #4CAF50;
+border-radius: 4px;
+border: 2px solid #4CAF50;
+}
+
+.delete:hover{
+  background-color: floralwhite;
+  color: #4CAF50;
 }
 </style>
 
 <body style="background-color: floralwhite;">
 
   <div style="background-color: #0c1731; height: 60px; width: 100%;">
-    <img src="../static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
+    <img src="/static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
   </div>
 
-  <div style="margin-top: 60px">
-  <h2> Hosts </h2>
-  <table>
-    <thead>
+  <div style="margin-top: 10px; margin-left: 10px; position: absolute;">
+    <a href="/" target="blank"><button class="button">Home</button></a>
+    <a href="/{{ name }}/home" target="blank"><button class="button">Menu</button></a>
+  </div>
+  <div>
+    <a href = "/{{ name }}/add_host"><img class="open-button" src="/static/plus_icon.png"></a>
+  </div>
+  <div style="margin-top: 100px;">
+<p style="font-family: Optima, sans-serif; margin-top: 40px">CLUSTER NAME: "{{ name }}"</p>
+<h1 style="font-family: Optima, sans-serif;">Host Detail</h1>
+
+
+
+
+<table style="font-family: Optima, sans-serif;">
+  <thead>
     <tr>
-      <th>Cluster ID</th>
-      <th>Cluster Name</th>
-      <th>host_id</th>
-      <th>hostgroup</th>
-      <th>host_IP</th>
-      <th>host_fqdn</th>
-      <th>host_live</th>
+      <th>Serial number</th>
+      <th>Hostgroup</th>
+      <th>Host IP</th>
+      <th>Host FQDN</th>
+      <th>Host Liveliness</th>
+      <th></th>     
     </tr>
-    </thead>
-    <tbody>
-      {% for row in value %}
-      <tr>
-          <td>{{ row[0] }}</td>
-          <td>{{ row[1] }}</td>
-          <td>{{ row[2] }}</td>
-          <td>{{ row[3] }}</td>
-          <td>{{ row[4] }}</td>
-          <td>{{ row[5] }}</td>
-          <td>{{ row[6] }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+</thead>
+<tbody>
+  {% for row in value %}
+  <tr>
+    <td></td>
+    <td>{{ row[0] }} </td>
+    <td>{{ row[1] }}</td>
+    <td>{{ row[2] }}</td>
+    <td>{{ row[3] }}</td>
+    <td><a href='/{{ name }}/{{ row[1] }}/delete_host' onclick="return confirm('Are you sure you want to delete?')"> <button type="submit" class="delete" >Delete Host</button> </a></td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+</div>
+<br>
+<div class="run" align="center">
+  <a href="/{{ name }}/checklist" target="blank"><button class="delete">Run Checklist</button></a>
 </div>
 
-  <!--div style="margin-top: 100px;">
-<table>
-  <tr>
-    <th>Hostgroup</th>
-    <th>Host IP</th>
-    <th>Host FQDN</th>
-    <th>Host Liveliness</th>    
-  </tr>
-  <tr>
-    <td>managment-node</td>
-    <td>192.168.134.183</td>
-    <td>reflex003-mgt-01.cloud.guavus.com</td>
-    <td></td>    
-  </tr>
-  <tr>
-    <td>managment-node</td>
-    <td>192.168.134.183</td>
-    <td>reflex003-mgt-01.cloud.guavus.com</td>
-    <td></td>    
-  </tr>
-</table>
-</div-->
-<div class="container" align="left">
-<a href="/return-file/" target="blank"><button class="btn btn-default">Download</button></a>
-</div>
-<div style="background-color: #0c1731; height: 30px; width: 100%; margin-top: 460px;">
-    </div>
+
+
+
+
+<div style="background-color: #0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
 </body>
 </html>

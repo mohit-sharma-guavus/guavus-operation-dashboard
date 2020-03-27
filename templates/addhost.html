@@ -51,21 +51,14 @@
   </div>
   <div style="margin-top: 10px; margin-left: 10px; position: absolute;">
     <a href="/" target="blank"><button class="button">Home</button></a>
+    <a href="/{{ name }}/home" target="blank"><button class="button">Menu</button></a>
+    <a href="/{{ name }}/hosts" target="blank"><button class="button">Hosts</button></a>
   </div>
 
   <br>
   <br>
   <br>
 <form action = "{{ request.path }}" method = "post">
-<div style="margin-left: 150px">
-    <label for="email" style="font-family: Optima, sans-serif;"><b>Cluster Name</b></label>
-    <input  class="textbox" type="text" placeholder="Cluster Name" name="email" required style="margin-left: 40px;">
-</div></br>
-<div style="margin-left: 150px">
-
-    <label for="email" style="font-family: Optima, sans-serif;"><b>Cluster Description</b></label>
-    <input class="textbox" type="text" placeholder="Cluster Description" name="description">
-     </div>
 
      <h2 style="margin-left: 150px; font-family: Optima, sans-serif;">Enter host details </h2>
     
