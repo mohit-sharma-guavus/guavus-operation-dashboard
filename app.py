@@ -409,12 +409,12 @@ def checklist(clusterName):
     #        int_host_count = int(host_count[0])
     print(data1)
     check_table_name = clusterName + "_checklist"
-    for i in range(host_count):
+    for i in range(len(list_of_lists)):
         list_of_lists[i].insert(0, check_table_name)
     print(list_of_lists)
     list_of_tuples = [tuple(l) for l in list_of_lists]
     print(list_of_tuples)
-
+    print("len of tuple is:",len(list_of_tuples))
     tuple_check_table_name = (check_table_name)
     list_check_table_name = [tuple_check_table_name, ] * host_count
     print(list_check_table_name)
@@ -425,7 +425,7 @@ def checklist(clusterName):
         (check_table_name))
     #        cur.executemany("INSERT INTO `%s`( host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", list_of_tuples)
 
-    for i in range(host_count):
+    for i in range(len(list_of_tuples)):
         j = list_of_tuples[i]
         cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",j)
     conn1.commit()
@@ -435,9 +435,7 @@ def checklist(clusterName):
     # Now get the data and put in table
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute(
-        "SELECT host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding FROM `%s` ORDER BY timestamp DESC LIMIT 6",
-        (check_table_name))
+    cursor.execute("SELECT host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding FROM `%s` ORDER BY timestamp DESC LIMIT %s",(check_table_name, len(list_of_tuples)))
     data = cursor.fetchall()
     return render_template("checklist.html", value=data, name=clusterName)
 
