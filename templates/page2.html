@@ -2,182 +2,92 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel = "stylesheet"
+   type = "text/css"
+   href= "/static/styles/mycss.css" />
 
+    <link rel="stylesheet" href= "{{ url_for('static',filename='styles/bootstrap.min.css') }}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <style>
 
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
 
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-body
-{
+   tbody
+    {
     counter-reset: Serial;           /* Set the Serial counter to 0 */
-}
+    }
+
 
 tr td:first-child:before
 {
-  counter-increment: Serial; /* Increment the Serial counter */
+  counter-increment: Serial;      /* Increment the Serial counter */
   content: counter(Serial); /* Display the counter */
 }
 
-.open-button {
-  background-color: white;
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  bottom: 23px;
-  right: 28px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-bottom: 650px;
-}
+name
 
-.delete{
-background-color: #4EA3E2;
-border-radius: 4px;
-border: 2px solid #4EA3E2;
-}
 
-.delete:hover{
-  background-color: #1A2855;
-  color: white;
-}
-.home-button {
-  background-color: white;
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3%;
-  right: 28px;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  left: 76%;
-}
-.profile-button {
-  background-color: white;
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3%;
-  right: 28px;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  left: 83%;
-}
-.logout-button {
-  background-color: white;
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3%;
-  right: 28px;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  left: 90%;
-}
-.hometext {
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3.5%;
-  right: 28px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  left: 73%;
-}
-.profiletext {
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3.5%;
-  right: 28px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  left: 79.5%;
-}
-.logouttext {
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3.5%;
-  right: 28px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  left: 86.5%;
-}
-.plustext {
-  color: black;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 14%;
-  right: 28px;
-  border-radius: 50%;
-  left: 90%;
-}
 </style>
 
-<body style="background-color: #fff;">
+<body class="header">
 
-  <div style="background-color: #0c1731; height: 60px; width: 100%;">
-    <img src="/static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
+<div id="mySidenav" class="sidenav">
+ <img class="profile-img" src="/static/profile.png">
+ <br>
+ <label style="margin-left: 32%">User Name</label>
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <div style="margin-top: 10%;">
+  <a href="/inprogress">Dashboard</a>
+  <a href='/{{ name }}/hosts'>Cluster Inventory</a>
+  <a href='/{{ name }}/hosts/checklist'>Run Checklist</a>
+  <a href="/inprogress">Monitoring</a>
+  <a href="/inprogress">Deployment</a>
+  <a href="/inprogress">Self Diagnostic</a>
+  <a href="/inprogress">Self Heal</a>
+   <a href="/{{ name }}/checklist/reports">Reports & Stats</a>
+  <a href="https://guavus.atlassian.net/wiki/spaces/CS/pages/1075183620/Operational+Dashboard">About</a>
+  <a href="#">FAQs</a>
+  </div>
+</div>
+
+<div style="position: absolute; margin-top: 0.5%; margin-left: 1%">
+<span class="span1" onclick="openNav()">&#9776;</span>
+</div>
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+  <div class="logo-div">
+    <img src="/static/Logo_Dashboard.png" class="logo">
   </div>
 
-  <div style="margin-top: 10px; margin-left: 10px; position: absolute;">
-    <a href="/" target="blank"><button class="button">Home</button></a>
-    <a href="/{{ name }}/home" target="blank"><button class="button">Menu</button></a>
-  </div>
+{% with success = get_flashed_messages(category_filter=["success"]) %}
+    {% if success %}
+        {%- for message in success %}
+        <div class="alert alert-success" role="alert">
+            <span>{{ message }}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor -%}
+    {% endif %}
+{% endwith %}
+  
   <div>
-    <label class="plustext">Add Host</label>
-    <a href = "/{{ name }}/add_host"><img class="open-button" src="/static/plus.png"></a>
+    <label class="plustext-host">Add Host</label>
+    <a href = "/{{ name }}/add_host"><img class="addcluster-button" src="/static/plus.png"></a>
   </div>
   <div style="margin-top: 100px;">
-<p style="font-family: Optima, sans-serif; margin-top: 40px">CLUSTER NAME: "{{ name }}"</p>
-<h1 style="font-family: Optima, sans-serif;">Host Detail</h1>
-
-
-
-
-<table style="font-family: Optima, sans-serif;">
+<p style="margin-top: 40px; margin-left: 1.5%; font-size: 30px;"><b>Cluster {{name}} : Inventory Details</b></p>
+<div class="table-div">
+<table>
   <thead>
     <tr>
       <th>Serial number</th>
@@ -185,7 +95,7 @@ border: 2px solid #4EA3E2;
       <th>Host IP</th>
       <th>Host FQDN</th>
       <th>Host Liveliness</th>
-      <th></th>     
+      <th>Options</th>
     </tr>
 </thead>
 <tbody>
@@ -196,26 +106,33 @@ border: 2px solid #4EA3E2;
     <td>{{ row[1] }}</td>
     <td>{{ row[2] }}</td>
     <td>{{ row[3] }}</td>
-    <td><a href='/{{ name }}/{{ row[1] }}/delete_host' onclick="return confirm('Are you sure you want to delete?')"> <button type="submit" class="delete" >Delete Host</button> </a></td>
+    <td><a href='/{{ name }}/{{ row[1] }}/delete_host' onclick="myFunction()"><img class="deletecluster-icon" src="/static/delete.png"></a></td>
   </tr>
   {% endfor %}
 </tbody>
 </table>
 </div>
-<br>
-<div class="run" align="center">
-  <a href="/{{ name }}/checklist" target="blank"><button class="delete">Run Checklist</button></a>
-</div>
 
 
+<a href = "{{ url_for('clusters') }}"><label class="hometext">Home</label><img class="home-button" src="/static/home.png"></a>
 
-<label class="hometext">Home</label>
-<a href = "/"><img class="home-button" src="/static/home.png"></a>
-<label class="profiletext">Profile</label>
-<a href = "/"><img class="profile-button" src="/static/profile.png"></a>
-<label class="logouttext">Logout</label>
-<a href = "{{ url_for('logout') }}"><img class="logout-button" src="/static/logout.png"></a>
+<a href = "{{ url_for('profile') }}"><label class="profiletext">Profile</label><img class="profile-button" src="/static/profile.png"></a>
 
-<div style="background-color: #0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
+<a href = "{{ url_for('logout') }}"><label class="logouttext">Logout</label><img class="logout-button" src="/static/logout.png"></a>
+
+<div class="footer"></div>
+<div id="snackbar">Cluster X has been deleted</div>
+<script>
+
+function myFunction() {
+ 
+  var r = confirm("Are you sure want to delete!");
+  if (r == true) {
+
+
+  }
+  document.getElementById("demo").innerHTML = txt;
+}
+</script>
 </body>
 </html>

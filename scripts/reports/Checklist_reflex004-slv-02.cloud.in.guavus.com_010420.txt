@@ -1,5 +1,5 @@
 reflex004-slv-02.cloud.in.guavus.com
-2020-04-01_09:20
+2020-04-01_07:12
 PASSED - Uptime > 6hrs
 PASSED -  7.6.1810 
 PASSED -  3.10.0-957.21.3.el7.x86_64 

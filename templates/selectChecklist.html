@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<link rel = "stylesheet"
+   type = "text/css"
+   href= "/static/styles/mycss.css" />
+<style>
+
+
+
+   tbody
+    {
+    counter-reset: Serial;           /* Set the Serial counter to 0 */
+    }
+
+
+tr td:first-child:before
+{
+  counter-increment: Serial;      /* Increment the Serial counter */
+  content: counter(Serial); /* Display the counter */
+}
+
+name
+
+
+</style>
+
+<body class="header">
+
+<div id="mySidenav" class="sidenav">
+ <img class="profile-img" src="/static/profile.png">
+ <br>
+ <label style="margin-left: 32%">User Name</label>
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <div style="margin-top: 10%;">
+  <a href="/inprogress">Dashboard</a>
+  <a href='/{{ name }}/hosts'>Cluster Inventory</a>
+  <a href='/{{ name }}/hosts/checklist'>Run Checklist</a>
+  <a href="/inprogress">Monitoring</a>
+  <a href="/inprogress">Deployment</a>
+  <a href="/inprogress">Self Diagnostic</a>
+  <a href="/inprogress">Self Heal</a>
+   <a href="/{{ name }}/checklist/reports">Reports & Stats</a>
+  <a href="https://guavus.atlassian.net/wiki/spaces/CS/pages/1075183620/Operational+Dashboard">About</a>
+  <a href="#">FAQs</a>
+  </div>
+</div>
+
+<div style="position: absolute; margin-top: 0.5%; margin-left: 1%">
+<span class="span1" onclick="openNav()">&#9776;</span>
+</div>
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+  <div class="logo-div">
+    <img src="/static/Logo_Dashboard.png" class="logo">
+  </div>
+
+
+
+  <div style="margin-top: 100px;">
+<p style="margin-top: 40px; margin-left: 1.5%; font-size: 30px;"><b>Cluster {{ name }} : Run Checklist</b></p>
+<div class="table-div4">
+<table>
+  <thead>
+    <tr>
+      <th>Serial number</th>
+      <th>Select</th>
+      <th>Hostgroup</th>
+      <th>Host IP</th>
+      <th>Host FQDN</th>
+      <th>Host Liveliness</th>
+    </tr>
+</thead>
+<tbody>
+  {% for row in value %}
+  <tr>
+    <td></td>
+    <td><input type="checkbox" name="{{ row[3] }}"/></td>
+    <td>{{ row[0] }} </td>
+    <td>{{ row[1] }}</td>
+    <td>{{ row[2] }}</td>
+    <td>{{ row[3] }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+</div>
+
+<div class="table-div2">
+  <p style="margin-top: 2%; margin-left: 1.5%; font-size: 15px;"><b>Select type of checks</b></p>
+<table class="checklist">
+  <thead>
+    <tr>
+      <th>S. No.</th>
+      <th>Select</th>
+      <th>Checks</th>
+    </tr>
+</thead>
+<tbody class="none">
+  <tr class="checklist">
+    <td></td>
+      <td class="checklist"><input type="radio" id="val1" name="check" value="1"></td>
+    <td class="checklist"><label for="val1"> OS Checks </label></td>
+  </tr>
+   <tr class="checklist">
+       <td></td>
+    <td class="checklist"><input type="radio" id="val2" name="check" value="2"></td>
+    <td class="checklist"><label for="val1"> Hardware Checks </label></td>
+  </tr class="checklist">
+   <tr>
+       <td></td>
+    <td class="checklist"><input type="radio" id="val3" name="check" value="3"></td>
+    <td class="checklist"><label for="val1"> Platform Checks </label></td>
+  </tr>
+   <tr class="checklist">
+       <td></td>
+    <td class="checklist"><input type="radio" id="val4" name="check" value="4"></td>
+    <td class="checklist"><label for="val1"> OS & Hardware Checks </label></td>
+  </tr>
+   <tr class="checklist">
+       <td></td>
+    <td class="checklist"><input type="radio" id="val5" name="check" value="5"></td>
+    <td class="checklist"><label for="val1">Platform & Hardware Checks </label></td>
+  </tr>
+   <tr class="checklist">
+       <td></td>
+    <td class="checklist"><input type="radio" id="val6" name="check" value="6"></td>
+    <td class="checklist"><label for="val1"> Platform & OS Checks </label></td>
+  </tr>
+  <tr class="checklist">
+      <td></td>
+    <td class="checklist"><input type="radio" id="val7" name="check" value="7"></td>
+    <td class="checklist"><label for="val1"> All Checks </label></td>
+  </tr>
+</tbody>
+</table>
+</div>
+<br>
+<div style="margin-bottom: 3%;" align="center">
+  <a href="/{{ name }}/checklist" target="blank"><button class="delete">Run Checklist</button></a>
+</div>
+
+
+
+<a href = "{{ url_for('clusters') }}"><label class="hometext">Home</label><img class="home-button" src="/static/home.png"></a>
+
+<a href = "{{ url_for('profile') }}"><label class="profiletext">Profile</label><img class="profile-button" src="/static/profile.png"></a>
+
+<a href = "{{ url_for('logout') }}"><label class="logouttext">Logout</label><img class="logout-button" src="/static/logout.png"></a>
+
+<div class="footer"></div>
+<div id="snackbar">Cluster X has been deleted</div>
+<script>
+function myFunction1() {
+  var x = document.getElementById("snackbar");
+  x.className = "show";
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+function myFunction() {
+
+  var r = confirm("Are you sure want to delete!");
+  if (r == true) {
+
+    myFunction1();
+  }
+  document.getElementById("demo").innerHTML = txt;
+}
+</script>
+</body>
+</html>

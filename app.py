@@ -137,9 +137,14 @@ def clusters():
             print("Showing Clusters!!")
             conn = mysql.connect()
             cursor = conn.cursor()
-            cursor.execute("SELECT cluster_name,cluster_desc,cluster_creation_date FROM cluster_info")
+            cursor.execute("SELECT A.cluster_name,A.cluster_desc,A.cluster_owner,(SELECT TABLE_ROWS from information_schema.tables where TABLE_NAME like QUOTE(A.cluster_name)),cluster_creation_date FROM cluster_info A;")
             data = cursor.fetchall()
-            return render_template("clusters.html", value=data, username=session['username'])
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT firstname,lastname FROM accounts where username like %s", (session['username']))
+            user = cursor.fetchall()
+            return render_template("clusters.html", value=data, user=user, username=session['username'])
         except Exception as e:
             return render_template("clusters_fresh.html", error = str(e))
     return redirect(url_for('login'))
@@ -156,6 +161,15 @@ def inprogress():
     return render_template("inprogress.html")
 
 
+@app.route('/profile')
+def profile():
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT username,firstname,lastname,email FROM accounts where username like %s",(session['username']))
+    data = cursor.fetchall()
+    return render_template("profile.html", value=data)
+
 @app.route('/<clusterName>/delete_cluster')
 def delete_cluster(clusterName):
     error = None
@@ -168,37 +182,49 @@ def delete_cluster(clusterName):
     conn.close()
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute("SELECT cluster_name,cluster_desc,cluster_creation_date FROM cluster_info")
+    cursor.execute("SELECT A.cluster_name,A.cluster_desc,A.cluster_owner,(SELECT TABLE_ROWS from information_schema.tables where TABLE_NAME like QUOTE(A.cluster_name)),cluster_creation_date FROM cluster_info A;")
     data = cursor.fetchall()
-    error = 'Cluster Successfully Deleted!!'
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT firstname,lastname FROM accounts where username like %s", (session['username']))
+    user = cursor.fetchall()
+#    error = 'Cluster Successfully Deleted!!'
     #   return redirect(url_for('clusters', error = error))
-    return render_template("clusters.html", error=error, value=data)
+    flash("Cluster Deleted!", "success")
+    return render_template("clusters.html", user=user, value=data, clusterName=clusterName)
 
 
 @app.route('/search', methods=['POST'])
 def search():
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT firstname,lastname FROM accounts where username like %s", (session['username']))
+    user = cursor.fetchall()
     error = None
     if request.method == "POST":
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT count(cluster_name) FROM cluster_info WHERE cluster_name = %s", request.form['search'])
+        cursor.execute("SELECT count(cluster_name) FROM cluster_info WHERE cluster_name like %s", request.form['search'])
         if cursor.fetchone()[0] == 1:
-            print("Clueter found!!")
+            print("Cluster found!!")
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(
-                "SELECT cluster_name,cluster_desc,cluster_creation_date FROM cluster_info where cluster_name = %s",
+                "SELECT A.cluster_name,A.cluster_desc,A.cluster_owner,(SELECT TABLE_ROWS from information_schema.tables where TABLE_NAME like QUOTE(A.cluster_name)),cluster_creation_date FROM cluster_info A where A.cluster_name = %s",
                 request.form['search'])
             data = cursor.fetchall()
-            return render_template("clusters.html", value=data)
+            return render_template("clusters.html", value=data, user=user, username=session['username'])
         else:
-            error = 'No such cluster Found!!'
-            return render_template("clusters.html", error=error)
+            flash("Cluster not found!", "danger")
+            return redirect(url_for("clusters"))
 
 
 @app.route('/add_cluster', methods=['GET', 'POST'])
 def add_cluster():
     if request.method == 'POST':
+        print(session['username'])
         check_cluster_name = request.form['email']
         conn3 = mysql.connect()
         cursor3 = conn3.cursor()
@@ -213,8 +239,8 @@ def add_cluster():
             cluster_date = time.strftime('%Y-%m-%d %H:%M:%S')
             conn = mysql.get_db()
             cur = conn.cursor()
-            cur.execute("INSERT INTO cluster_info(cluster_name, cluster_desc, cluster_creation_date) VALUES (%s,%s,%s)",
-                        (new_cluster_name, cluster_description, cluster_date))
+            cur.execute("INSERT INTO cluster_info(cluster_name, cluster_desc, cluster_creation_date, cluster_owner) VALUES (%s,%s,%s,%s)",
+                        (new_cluster_name, cluster_description, cluster_date, session['username']))
             conn.commit()
             conn = mysql.connect()
             cursor = conn.cursor()
@@ -286,6 +312,7 @@ def add_cluster():
                 conn1.commit()
                 conn1.close()
                 #              flash('Cluster Successfully Added!!')
+                flash("Cluster Added!", "success")
                 return redirect(url_for('clusters'))
             else:
                 return ('Cluster with that name not exist!!')
@@ -302,6 +329,16 @@ def hosts(cluster_name):
     return render_template("page2.html", value=data, name=cluster_name)
 
 
+@app.route('/<cluster_name>/hosts/checklist')
+def selectChecklist(cluster_name):
+    print("Showing Host List!!")
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT hostgroup, host_IP, host_fqdn, host_live FROM `%s` ", (cluster_name))
+    data = cursor.fetchall()
+    return render_template("selectChecklist.html", value=data, name=cluster_name)
+
+
 @app.route('/<clusterName>/<hostName>/delete_host')
 def delete_host(clusterName, hostName):
     print("Deleting Host!!")
@@ -311,6 +348,7 @@ def delete_host(clusterName, hostName):
     conn.commit()
     conn.close()
     #    flash('Host Successfully Deleted!!')
+    flash("Host Deleted!", "success")
     return redirect(url_for('hosts', cluster_name=clusterName))
 
 
@@ -378,6 +416,7 @@ def add_host(clusterName):
         conn1.commit()
         conn1.close()
         #       flash('Host Successfully Deleted!!')
+        flash("Host is added", "success")
         return redirect(url_for('hosts', cluster_name=clusterName))
     return render_template('addhost.html', name=clusterName)
 
@@ -409,12 +448,12 @@ def checklist(clusterName):
     #        int_host_count = int(host_count[0])
     print(data1)
     check_table_name = clusterName + "_checklist"
-    for i in range(len(list_of_lists)):
+    for i in range(host_count):
         list_of_lists[i].insert(0, check_table_name)
     print(list_of_lists)
     list_of_tuples = [tuple(l) for l in list_of_lists]
     print(list_of_tuples)
-    print("len of tuple is:",len(list_of_tuples))
+
     tuple_check_table_name = (check_table_name)
     list_check_table_name = [tuple_check_table_name, ] * host_count
     print(list_check_table_name)
@@ -425,7 +464,7 @@ def checklist(clusterName):
         (check_table_name))
     #        cur.executemany("INSERT INTO `%s`( host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", list_of_tuples)
 
-    for i in range(len(list_of_tuples)):
+    for i in range(host_count):
         j = list_of_tuples[i]
         cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",j)
     conn1.commit()
@@ -435,7 +474,9 @@ def checklist(clusterName):
     # Now get the data and put in table
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute("SELECT host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding FROM `%s` ORDER BY timestamp DESC LIMIT %s",(check_table_name, len(list_of_tuples)))
+    cursor.execute(
+        "SELECT host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding FROM `%s` ORDER BY timestamp DESC LIMIT 6",
+        (check_table_name))
     data = cursor.fetchall()
     return render_template("checklist.html", value=data, name=clusterName)
 

@@ -1,151 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+  <link rel = "stylesheet"
+   type = "text/css"
+   href= "{{ url_for('static',filename='styles/mycss.css') }}" />
+    <link rel="stylesheet" href= "{{ url_for('static',filename='styles/bootstrap.min.css') }}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
 <style>
-
-
-/* Button used to open the contact form - fixed at the bottom of the page */
-.open-button {
-  background-color: white;
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 15%;
-  right: 28px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
-
-.home-button {
-  background-color: white;
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3%;
-  right: 28px;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  left: 76%;
-}
-.profile-button {
-  background-color: white;
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3%;
-  right: 28px;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  left: 83%;
-}
-.logout-button {
-  background-color: white;
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3%;
-  right: 28px;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  left: 90%;
-}
-.hometext {
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3.5%;
-  right: 28px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  left: 73%;
-}
-.profiletext {
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3.5%;
-  right: 28px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  left: 79.5%;
-}
-.logouttext {
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3.5%;
-  right: 28px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  left: 86.5%;
-}
-.plustext {
-  color: black;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 16%;
-  right: 28px;
-  border-radius: 50%;
-  left: 89%;
-}
-.textbox{
-  width: 300px;
-  height: 40px;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  background-color: #f8f8f8;
-  resize: none;
-}
-
 body
 {
     counter-reset: Serial;           /* Set the Serial counter to 0 */
-}
-
-table {
-  font-family: Optima, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
 }
 
 
@@ -155,59 +21,80 @@ tr td:first-child:before
   content: counter(Serial); /* Display the counter */
 }
 
-.search{
-height: 40px;
-width: 200px;
-border: 2px solid  #4EA3E2;
-margin-left: 160px;
-margin-left: 100px;
-background-color: #4EA3E2;
-border-radius: 4px;
-}
-
-.search:hover{
-  background-color: #1A2855;
-  color: white;
-}
-
-.delete{
-background-color: #4EA3E2;
-border-radius: 4px;
-border: 2px solid #4EA3E2;
-}
-
-.delete:hover{
-  background-color: #1A2855;
-  color: white;
-}
-
 </style>
-</head>
+<body class="header">
+ 
+ <div id="mySidenav" class="sidenav">
+ <img class="profile-img" src="{{ url_for('static',filename='profile.png') }}">
+ <br>
+ <label style="margin-left: 32%">User Name</label>
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <div style="margin-top: 10%;">
+  <a href="https://guavus.atlassian.net/wiki/spaces/CS/pages/1075183620/Operational+Dashboard">About</a>
+  <a href="#">FAQs</a>
+  </div>
+</div>
 
-<body style="background-color: #fff">
- 
- 
-  <div style="background-color: #0c1731; height: 60px; width: 100%;">
-    <img src="/static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
+<div style="position: absolute; margin-top: 0.5%; margin-left: 1%">
+<span class="span1" onclick="openNav()">&#9776;</span>
+</div>
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+
+  <div class="logo-div">
+    <img src="{{ url_for('static',filename='Logo_Dashboard.png') }}" class="logo">
+<label class="username-header">Hello,  {{ user[0][1].upper() }} {{ user[0][0] }}</label>
   </div>
   
-  <form method="post" action="/search" style="margin-top: 50px;">  
-    <label for="search" style="font-family: Optima, sans-serif;"><b>Search Cluster:</b></label>
-    <input class="textbox" type="text" placeholder="Search Cluster" name="search" value="{{ request.form.search}}">
+ {% with success = get_flashed_messages(category_filter=["success"]) %}
+    {% if success %}
+        {%- for message in success %}
+        <div class="alert alert-success" role="alert">
+            <span>{{ message }}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor -%}
+    {% endif %}
+{% endwith %}
+
+
+ {% with errors = get_flashed_messages(category_filter=["danger"]) %}
+            {% if errors %}
+                {%- for message in errors %}
+                    <div class="alert alert-danger" role="alert">
+                        <span>{{ message }}</span>
+                        <a href="{{ url_for('clusters') }}"><button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button></a>
+                    </div>
+                {% endfor -%}
+            {% endif %}
+ {% endwith %}
+
+    <br><br>
+  <form method="post" action="{{ url_for('search') }}">
+    <input class="search-textbox" type="text" placeholder="Search Cluster" name="search" value="{{ request.form.search }}">
     <button class="search" type="submit"><b>Search</b></button><br>
   </form>
 
-  {% if error %}
-         <p><strong>Message:</strong> {{ error }}
-  {% endif %}
-
-<div style="margin-top: 60px">
+<div class="table-div">
 <table>
   <thead>
     <tr>
       <th>Serial number</th>
       <th>Cluster Name</th>
       <th>Cluster Description</th>
+      <th>Cluster Owner</th>
+      <th>Cluster Size</th>
       <th>Cluster Creation Date</th>
       <th>Options</th>
     </tr> 
@@ -216,25 +103,41 @@ border: 2px solid #4EA3E2;
     {% for row in value %}
     <tr>
         <td></td>
-        <td><a href='/{{ row[0] }}/home'> {{ row[0] }} </a></td>
+        <td><a href='/{{ row[0] }}/hosts'> {{ row[0] }} </a></td>
         <td>{{ row[1] }}</td>
         <td>{{ row[2] }}</td>
-        <td><a href='/{{ row[0] }}/delete_cluster' onclick="return confirm('Are you sure you want to delete?')"><button type="submit" class="delete" >Delete Cluster</button></a></td>
+        <td>{{ row[3] }}</td>
+        <td>{{ row[4] }}</td>
+        <td><a href='/{{ row[0] }}/delete_cluster' onclick="myFunction()"><img class="deletecluster-icon" src="/static/delete.png"></a>
     </tr>
     {% endfor %}
   </tbody>  
 </table>
+
+
+
 </div>
-<label class="hometext">Home</label>
-<a href = "/"><img class="home-button" src="/static/home.png"></a>
-<label class="profiletext">Profile</label>
-<a href = "/"><img class="profile-button" src="/static/profile.png"></a>
-<label class="logouttext">Logout</label>
-<a href="{{ url_for('logout') }}"><img class="logout-button" src="/static/logout.png"></a>
+
+<a href = "{{ url_for('clusters') }}"><label class="hometext">Home</label><img class="home-button" src="/static/home.png"></a>
+
+<a href = "{{ url_for('profile') }}"><label class="profiletext">Profile</label><img class="profile-button" src="/static/profile.png"></a>
+<a href="{{ url_for('logout') }}"><label class="logouttext">Logout</label><img class="logout-button" src="/static/logout.png"></a>
 
 <label class="plustext">Add Cluster</label>
-<a href = "{{ url_for('add_cluster') }}"><img class="open-button" src="/static/plus.png"></a>
-<div style="background-color:#0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
+<a href = "{{ url_for('add_cluster') }}"><img class="addcluster-button" src="/static/plus.png"></a>
+<div class="footer"></div>
+<div id="snackbar">Cluster {{ clusterName }} has been deleted</div>
+<script>
 
+function myFunction() {
+ 
+  var r = confirm("Are you sure want to delete!");
+  if (r == true) {
+
+
+  }
+  document.getElementById("demo").innerHTML = txt;
+}
+</script>
 </body>
 </html>

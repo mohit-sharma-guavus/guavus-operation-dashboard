@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel = "stylesheet"
+   type = "text/css"
+   href= "{{ url_for('static',filename='styles/mycss.css') }}" />
+
+</head>
+<style>
+
+
+</style>
+<body class="header">
+ 
+ <div id="mySidenav" class="sidenav">
+ <img class="profile-img" src="/static/profile.png">
+ <br>
+ <label style="margin-left: 32%">User Name</label>
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <div style="margin-top: 10%;">
+  <a href="https://guavus.atlassian.net/wiki/spaces/CS/pages/1075183620/Operational+Dashboard">About</a>
+  <a href="#">FAQs</a>
+  </div>
+</div>
+
+<div style="position: absolute; margin-top: 0.5%; margin-left: 1%">
+<span class="span1" onclick="openNav()">&#9776;</span>
+</div>
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+
+  <div class="logo-div">
+    <img src="/static/Logo_Dashboard.png" class="logo">
+<label class="username-header">Hello,  {{ value[0][2].upper() }} {{ value[0][1] }}</label>
+
+</div>
+
+<div style="background-color: #D3D3D3; height: 60%; width: 20%; position: absolute; margin-left: 7%; margin-top: 5%;">
+  <img class="profile1-icon" src="/static/profile.png"></a>
+  <h2 style="margin-top: 98%; margin-left: 20%;">{{ value[0][2].upper() }} {{ value[0][1] }}</h2><br>
+
+  <button class="delete" style="margin-left: 25%;">Change Password</button>
+</div>
+
+<div style="background-color: #D3D3D3; height: 60%; width: 60%; position: absolute; margin-left: 32%; margin-top: 5%;">
+  
+  <div class="table-div3">
+<table>
+
+  <tr>
+  </tr>
+  <tr>
+    <td>User Name</td>
+    <td>{{ value[0][0] }}</td>
+  </tr>
+  <tr>
+    <td>First Name</td>
+    <td>{{ value[0][1] }}</td>
+  </tr>
+  <tr>
+    <td>Last Name</td>
+    <td>{{ value[0][2] }}</td>
+  </tr>
+  <tr>
+    <td>Email</td>
+    <td>{{ value[0][3] }}</td>
+  </tr>
+  <tr>
+    <td>Department</td>
+    <td>-</td>
+  </tr>
+
+</table>
+
+</div>
+</div>
+
+
+<a href = "{{ url_for('clusters') }}"><label class="hometext">Home</label><img class="home-button" src="/static/home.png"></a>
+
+<a href = "{{ url_for('profile') }}"><label class="profiletext">Profile</label><img class="profile-button" src="/static/profile.png"></a>
+<a href="{{ url_for('logout') }}"><label class="logouttext">Logout</label><img class="logout-button" src="/static/logout.png"></a>
+
+
+<div class="footer"></div>
+
+</body>
+</html>

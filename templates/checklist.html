@@ -1,187 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+ <link rel = "stylesheet"
+   type = "text/css"
+   href= "{{ url_for('static',filename='styles/mycss.css') }}" />
 <style>
 
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-  white-space: nowrap;
-  overflow-x:auto;
-}
 
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-body
-{
-    counter-reset: Serial;           /* Set the Serial counter to 0 */
-}
-tr td:first-child:before
-{
-  counter-increment: Serial; /* Increment the Serial counter */
-  content: counter(Serial); /* Display the counter */
-}
-
-.button {
-    font-family: Optima, sans-serif;
-    background-color: #4EA3E2;
-    border: 2px solid;
-    border-radius: 8px;
-    color: white;
-    padding: 1px 20px;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 15px;
-    margin: 14px 2px;
-    cursor: pointer;
-    height: 30px;
-}
-.button:hover{
-  background-color: #1A2855;
-  color: white;
-}
-.delete{
-background-color: #4EA3E2;
-border-radius: 4px;
-border: 2px solid #4EA3E2;
-}
-
-.delete:hover{
-  background-color: floralwhite;
-  color: #4CAF50;
-}
-.home-button {
-  background-color: white;
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3%;
-  right: 28px;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  left: 76%;
-}
-.profile-button {
-  background-color: white;
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3%;
-  right: 28px;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  left: 83%;
-}
-.logout-button {
-  background-color: white;
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3%;
-  right: 28px;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  left: 90%;
-}
-.hometext {
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3.5%;
-  right: 28px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  left: 73%;
-}
-.profiletext {
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3.5%;
-  right: 28px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  left: 79.5%;
-}
-.logouttext {
-  color: white;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 3.5%;
-  right: 28px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  left: 86.5%;
-}
-.plustext {
-  color: black;
-  padding: 2px 2px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  top: 16%;
-  right: 28px;
-  border-radius: 50%;
-  left: 89%;
-}
 </style>
 
-<body style="background-color: #fff;">
+<body class="header">
 
-  <div style="background-color: #0c1731; height: 60px; width: 100%;">
-    <img src="/static/Logo_Dashboard.png" style="height: 60px; width: 150px;">
+  <div id="mySidenav" class="sidenav">
+ <img class="profile-img" src="/static/profile.png">
+ <br>
+ <label style="margin-left: 32%">User Name</label>
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <div style="margin-top: 10%;">
+  <a href="#">Dashboard</a>
+  <a href="#">Cluster Inventory</a>
+  <a href="#">Monitoring</a>
+  <a href="#">Deployment</a>
+  <a href="#">Self Diagnostic</a>
+  <a href="#">Self Heal</a>
+  <a href="checklist_reports.html">Reports & Stats</a>
+  <a href="https://guavus.atlassian.net/wiki/spaces/CS/pages/1075183620/Operational+Dashboard">About</a>
+  <a href="#">FAQs</a>
+  </div>
+</div>
+
+<div style="position: absolute; margin-top: 0.5%; margin-left: 1%">
+<span class="span1" onclick="openNav()">&#9776;</span>
+</div>
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+
+
+
+  <div class="logo-div">
+    <img src="/static/Logo_Dashboard.png" class="logo">
   </div>
 
-  <div style="margin-top: 10px; margin-left: 10px; position: absolute;">
-    <a href="/" target="blank"><button >Home</button></a>
-    <a href="/{{ name }}/home" target="blank"><button >Menu</button></a>
-    <a href="/{{ name }}/hosts" target="blank"><button >Hosts</button></a>
-  </div>
-  
-<p style="font-family: Optima, sans-serif; margin-top: 40px">CLUSTER NAME: "{{ name }}"</p>
+  <p style="margin-top: 40px; margin-left: 1.5%; font-size: 30px;"><b>"{{ name }}"</b></p>
 
-<div style="margin-top: 100px;">
-<h1 style="font-family: Optima, sans-serif;">Press Download button to Download Report for {{ name }} cluster!</h1>
 </div>
 
 
 
 
 
-  <div style="overflow-x:auto">
-<table style="font-family: Optima, sans-serif;">
+  <div class="table-div">
+  
+<table class="font-style">
   <thead>
     <tr>
       <th>Serial number</th>
@@ -231,18 +109,17 @@ border: 2px solid #4EA3E2;
 </table>
 </div>
 
-  <div class="download" align="left">
-    <a href="/{{ name }}/return-file" target="blank"><button class="button" >Export as csv</button></a>
-    <a href="/{{ name }}/checklist/reports" target="blank"><button class="button" >View Past 10 Reports</button></a>
+  <div class="download" align="center"    ><br>
+    <a href="/{{ name }}/return-file" target="blank"><button class="delete" >Export as csv</button></a>
   </div>
 
-<label class="hometext">Home</label>
-<a href = "/"><img class="home-button" src="/static/home.png"></a>
-<label class="profiletext">Profile</label>
-<a href = "/"><img class="profile-button" src="/static/profile.png"></a>
-<label class="logouttext">Logout</label>
-<a href = "{{ url_for('logout') }}"><img class="logout-button" src="/static/logout.png"></a>
 
-<div style="background-color: #0c1731; height: 30px; width: 100%; position: fixed; bottom: 10px;"></div>
+<a href = "{{ url_for('clusters') }}"><label class="hometext">Home</label><img class="home-button" src="/static/home.png"></a>
+
+<a href = "{{ url_for('profile') }}"><label class="profiletext">Profile</label><img class="profile-button" src="/static/profile.png"></a>
+
+<a href = "{{ url_for('logout') }}"><label class="logouttext">Logout</label><img class="logout-button" src="/static/logout.png"></a>
+
+<div class="footer"></div>
 </body>
 </html>
