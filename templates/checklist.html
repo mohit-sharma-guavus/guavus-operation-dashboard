@@ -8,6 +8,18 @@
 
 
 
+   tbody
+    {
+    counter-reset: Serial;           /* Set the Serial counter to 0 */
+    }
+
+
+tr td:first-child:before
+{
+  counter-increment: Serial;      /* Increment the Serial counter */
+  content: counter(Serial); /* Display the counter */
+}
+
 </style>
 
 <body class="header">
@@ -49,7 +61,7 @@ function closeNav() {
     <img src="/static/Logo_Dashboard.png" class="logo">
   </div>
 
-  <p style="margin-top: 40px; margin-left: 1.5%; font-size: 30px;"><b>"{{ name }}"</b></p>
+  <p style="margin-top: 40px; margin-left: 1.5%; font-size: 30px;"><b>Cluster {{ name }} : Checklist Report</b></p>
 
 </div>
 
@@ -57,29 +69,29 @@ function closeNav() {
 
 
 
-  <div class="table-div">
-  
-<table class="font-style">
+  <div style="overflow-x:auto">
+{% if view == '1' %}
+<table style="font-family: Optima, sans-serif;">
   <thead>
     <tr>
       <th>Serial number</th>
       <th>Hosts</th>
       <th>Checklist Run Time</th>
-      <th>Host Uptime</th>
-      <th>OS Version</th>
+      <th>Ping Status</th>
+      <th>SSH Status</th>
+      <th>System Manufacturer</th>
+      <th>System Product Name</th>
+      <th>System UUID</th>
+      <th>System Version</th>
       <th>Kernel Version</th>
-      <th>/opt FS Use</th>
-      <th>/var FS Use</th>
-      <th>Root FS Use</th>
-      <th>Total CPU</th>
-      <th>Total Memory</th>
-      <th>MTU</th>
-      <th>SWAP Status</th>
-      <th>Selinux Status</th>
-      <th>Firewall Status</th>
-      <th>NTPD Status</th>
-      <th>IP_forwarding Status</th>
-      <th></th>     
+      <th>Hardware Platform</th>
+      <th>BIOS Version</th>
+      <th>Total System CPU</th>
+      <th>Processor Frequency</th>
+      <th>Total System Memory(GB)</th>
+      <th>Total Number Of Disks</th>
+      <th>Total Disk Space</th>
+      <th></th>
     </tr>
 </thead>
 <tbody>
@@ -107,6 +119,422 @@ function closeNav() {
   {% endfor %}
 </tbody>
 </table>
+{% elif view == '2' %}
+<table style="font-family: Optima, sans-serif;">
+  <thead>
+    <tr>
+      <th>Serial number</th>
+      <th>Hosts</th>
+      <th>Checklist Run Time</th>
+      <th>Ping Status</th>
+      <th>SSH Status</th>
+      <th>OS Version</th>
+      <th>Hostname</th>
+      <th>Host Timezone</th>
+      <th>NTP Sync Status</th>
+      <th>CIDR</th>
+      <th>Selinux Status</th>
+      <th>DHCP Status</th>
+      <th>Network Manager Status</th>
+      <th>Interface Speed</th>
+      <th>MTU Speed</th>
+      <th>Log FS Size</th>
+      <th>Root FS Size</th>
+      <th>IP Forward Status</th>
+      <th>DMESG Status</th>
+      <th>Transparent Huge page Status</th>
+      <th></th>
+    </tr>
+</thead>
+<tbody>
+  {% for row in value %}
+  <tr>
+    <td></td>
+    <td>{{ row[0] }} </td>
+    <td>{{ row[1] }}</td>
+    <td>{{ row[2] }}</td>
+    <td>{{ row[3] }}</td>
+    <td>{{ row[4] }}</td>
+    <td>{{ row[5] }}</td>
+    <td>{{ row[6] }}</td>
+    <td>{{ row[7] }} </td>
+    <td>{{ row[8] }}</td>
+    <td>{{ row[9] }}</td>
+    <td>{{ row[10] }}</td>
+    <td>{{ row[11] }}</td>
+    <td>{{ row[12] }}</td>
+    <td>{{ row[13] }}</td>
+    <td>{{ row[14] }}</td>
+    <td>{{ row[15] }}</td>
+    <td>{{ row[16] }}</td>
+    <td>{{ row[17] }}</td>
+    <td>{{ row[18] }}</td>
+    <td>{{ row[19] }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+{% elif view == '3' %}
+<table style="font-family: Optima, sans-serif;">
+  <thead>
+    <tr>
+      <th>Serial number</th>
+      <th>Hosts</th>
+      <th>Checklist Run Time</th>
+      <th>Ping Status</th>
+      <th>SSH Status</th>
+      <th>HDP Status</th>
+      <th>Hadoop Version</th>
+      <th>Hadoop Status</th>
+      <th>Kerberos Status</th>
+      <th>Ambari Server Status</th>
+      <th>Ambari Client Status</th>
+      <th>Zookepper Status</th>
+      <th>Kafka Status</th>
+      <th>Kubernetes Status</th>
+      <th></th>
+    </tr>
+</thead>
+<tbody>
+  {% for row in value %}
+  <tr>
+    <td></td>
+    <td>{{ row[0] }} </td>
+    <td>{{ row[1] }}</td>
+    <td>{{ row[2] }}</td>
+    <td>{{ row[3] }}</td>
+    <td>{{ row[4] }}</td>
+    <td>{{ row[5] }}</td>
+    <td>{{ row[6] }}</td>
+    <td>{{ row[7] }} </td>
+    <td>{{ row[8] }}</td>
+    <td>{{ row[9] }}</td>
+    <td>{{ row[10] }}</td>
+    <td>{{ row[11] }}</td>
+    <td>{{ row[12] }}</td>
+    <td>{{ row[13] }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+
+{% elif view == '4' %}
+<table style="font-family: Optima, sans-serif;">
+  <thead>
+    <tr>
+      <th>Serial number</th>
+      <th>Hosts</th>
+      <th>Checklist Run Time</th>
+      <th>Ping Status</th>
+      <th>SSH Status</th>
+      <th>System Manufacturer</th>
+      <th>System Product Name</th>
+      <th>System UUID</th>
+      <th>System Version</th>
+      <th>Kernel Version</th>
+      <th>Hardware Platform</th>
+      <th>BIOS Version</th>
+      <th>Total System CPU</th>
+      <th>Processor Frequency</th>
+      <th>Total System Memory(GB)</th>
+      <th>Total Number Of Disks</th>
+      <th>Total Disk Space</th>
+      <th>OS Version</th>
+      <th>Hostname</th>
+      <th>Host Timezone</th>
+      <th>NTP Sync Status</th>
+      <th>CIDR</th>
+      <th>Selinux Status</th>
+      <th>DHCP Status</th>
+      <th>Network Manager Status</th>
+      <th>Interface Speed</th>
+      <th>MTU Speed</th>
+      <th>Log FS Size</th>
+      <th>Root FS Size</th>
+      <th>IP Forward Status</th>
+      <th>DMESG Status</th>
+      <th>Transparent Huge page Status</th>
+      <th></th>
+    </tr>
+</thead>
+<tbody>
+  {% for row in value %}
+  <tr>
+    <td></td>
+    <td>{{ row[0] }} </td>
+    <td>{{ row[1] }}</td>
+    <td>{{ row[2] }}</td>
+    <td>{{ row[3] }}</td>
+    <td>{{ row[4] }}</td>
+    <td>{{ row[5] }}</td>
+    <td>{{ row[6] }}</td>
+    <td>{{ row[7] }} </td>
+    <td>{{ row[8] }}</td>
+    <td>{{ row[9] }}</td>
+    <td>{{ row[10] }}</td>
+    <td>{{ row[11] }}</td>
+    <td>{{ row[12] }}</td>
+    <td>{{ row[13] }}</td>
+    <td>{{ row[14] }}</td>
+    <td>{{ row[15] }}</td>
+    <td>{{ row[16] }}</td>
+    <td>{{ row[17] }}</td>
+    <td>{{ row[18] }}</td>
+    <td>{{ row[19] }}</td>
+    <td>{{ row[20] }}</td>
+    <td>{{ row[21] }}</td>
+    <td>{{ row[22] }}</td>
+    <td>{{ row[23] }} </td>
+    <td>{{ row[24] }}</td>
+    <td>{{ row[25] }}</td>
+    <td>{{ row[26] }}</td>
+    <td>{{ row[27] }}</td>
+    <td>{{ row[28] }}</td>
+    <td>{{ row[29] }}</td>
+    <td>{{ row[30] }}</td>
+    <td>{{ row[31] }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+{% elif view == '5' %}
+<table style="font-family: Optima, sans-serif;">
+  <thead>
+    <tr>
+      <th>Serial number</th>
+      <th>Hosts</th>
+      <th>Checklist Run Time</th>
+      <th>Ping Status</th>
+      <th>SSH Status</th>
+      <th>System Manufacturer</th>
+      <th>System Product Name</th>
+      <th>System UUID</th>
+      <th>System Version</th>
+      <th>Kernel Version</th>
+      <th>Hardware Platform</th>
+      <th>BIOS Version</th>
+      <th>Total System CPU</th>
+      <th>Processor Frequency</th>
+      <th>Total System Memory(GB)</th>
+      <th>Total Number Of Disks</th>
+      <th>Total Disk Space</th>
+      <th>HDP Status</th>
+      <th>Hadoop Version</th>
+      <th>Hadoop Status</th>
+      <th>Kerberos Status</th>
+      <th>Ambari Server Status</th>
+      <th>Ambari Client Status</th>
+      <th>Zookepper Status</th>
+      <th>Kafka Status</th>
+      <th>Kubernetes Status</th>
+      <th></th>
+    </tr>
+</thead>
+<tbody>
+  {% for row in value %}
+  <tr>
+    <td></td>
+    <td>{{ row[0] }} </td>
+    <td>{{ row[1] }}</td>
+    <td>{{ row[2] }}</td>
+    <td>{{ row[3] }}</td>
+    <td>{{ row[4] }}</td>
+    <td>{{ row[5] }}</td>
+    <td>{{ row[6] }}</td>
+    <td>{{ row[7] }} </td>
+    <td>{{ row[8] }}</td>
+    <td>{{ row[9] }}</td>
+    <td>{{ row[10] }}</td>
+    <td>{{ row[11] }}</td>
+    <td>{{ row[12] }}</td>
+    <td>{{ row[13] }}</td>
+    <td>{{ row[14] }}</td>
+    <td>{{ row[15] }}</td>
+    <td>{{ row[16] }}</td>
+    <td>{{ row[17] }}</td>
+    <td>{{ row[18] }}</td>
+    <td>{{ row[19] }}</td>
+    <td>{{ row[20] }}</td>
+    <td>{{ row[21] }}</td>
+    <td>{{ row[22] }}</td>
+    <td>{{ row[23] }}</td>
+    <td>{{ row[24] }}</td>
+    <td>{{ row[25] }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+{% elif view == '6' %}
+<table style="font-family: Optima, sans-serif;">
+  <thead>
+    <tr>
+      <th>Serial number</th>
+      <th>Hosts</th>
+      <th>Checklist Run Time</th>
+      <th>Ping Status</th>
+      <th>SSH Status</th>
+      <th>OS Version</th>
+      <th>Hostname</th>
+      <th>Host Timezone</th>
+      <th>NTP Sync Status</th>
+      <th>CIDR</th>
+      <th>Selinux Status</th>
+      <th>DHCP Status</th>
+      <th>Network Manager Status</th>
+      <th>Interface Speed</th>
+      <th>MTU Speed</th>
+      <th>Log FS Size</th>
+      <th>Root FS Size</th>
+      <th>IP Forward Status</th>
+      <th>DMESG Status</th>
+      <th>Transparent Huge page Status</th>
+      <th>HDP Status</th>
+      <th>Hadoop Version</th>
+      <th>Hadoop Status</th>
+      <th>Kerberos Status</th>
+      <th>Ambari Server Status</th>
+      <th>Ambari Client Status</th>
+      <th>Zookepper Status</th>
+      <th>Kafka Status</th>
+      <th>Kubernetes Status</th>
+      <th></th>
+    </tr>
+</thead>
+<tbody>
+  {% for row in value %}
+  <tr>
+    <td></td>
+    <td>{{ row[0] }} </td>
+    <td>{{ row[1] }}</td>
+    <td>{{ row[2] }}</td>
+    <td>{{ row[3] }}</td>
+    <td>{{ row[4] }}</td>
+    <td>{{ row[5] }}</td>
+    <td>{{ row[6] }}</td>
+    <td>{{ row[7] }} </td>
+    <td>{{ row[8] }}</td>
+    <td>{{ row[9] }}</td>
+    <td>{{ row[10] }}</td>
+    <td>{{ row[11] }}</td>
+    <td>{{ row[12] }}</td>
+    <td>{{ row[13] }}</td>
+    <td>{{ row[14] }}</td>
+    <td>{{ row[15] }}</td>
+    <td>{{ row[16] }}</td>
+    <td>{{ row[17] }}</td>
+    <td>{{ row[18] }} </td>
+    <td>{{ row[19] }}</td>
+    <td>{{ row[20] }}</td>
+    <td>{{ row[21] }}</td>
+    <td>{{ row[22] }}</td>
+    <td>{{ row[23] }}</td>
+    <td>{{ row[24] }}</td>
+    <td>{{ row[25] }}</td>
+    <td>{{ row[26] }}</td>
+    <td>{{ row[27] }}</td>
+    <td>{{ row[28] }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+{% elif view == '7' %}
+<table style="font-family: Optima, sans-serif;">
+  <thead>
+    <tr>
+      <th>Serial number</th>
+      <th>Hosts</th>
+      <th>Checklist Run Time</th>
+      <th>Ping Status</th>
+      <th>SSH Status</th>
+      <th>System Manufacturer</th>
+      <th>System Product Name</th>
+      <th>System UUID</th>
+      <th>System Version</th>
+      <th>Kernel Version</th>
+      <th>Hardware Platform</th>
+      <th>BIOS Version</th>
+      <th>Total System CPU</th>
+      <th>Processor Frequency</th>
+      <th>Total System Memory(GB)</th>
+      <th>Total Number Of Disks</th>
+      <th>Total Disk Space</th>
+      <th>OS Version</th>
+      <th>Hostname</th>
+      <th>Host Timezone</th>
+      <th>NTP Sync Status</th>
+      <th>CIDR</th>
+      <th>Selinux Status</th>
+      <th>DHCP Status</th>
+      <th>Network Manager Status</th>
+      <th>Interface Speed</th>
+      <th>MTU Speed</th>
+      <th>Log FS Size</th>
+      <th>Root FS Size</th>
+      <th>IP Forward Status</th>
+      <th>DMESG Status</th>
+      <th>Transparent Huge page Status</th>
+      <th>HDP Status</th>
+      <th>Hadoop Version</th>
+      <th>Hadoop Status</th>
+      <th>Kerberos Status</th>
+      <th>Ambari Server Status</th>
+      <th>Ambari Client Status</th>
+      <th>Zookepper Status</th>
+      <th>Kafka Status</th>
+      <th>Kubernetes Status</th>
+      <th></th>
+    </tr>
+</thead>
+<tbody>
+  {% for row in value %}
+  <tr>
+    <td></td>
+    <td>{{ row[0] }} </td>
+    <td>{{ row[1] }}</td>
+    <td>{{ row[2] }}</td>
+    <td>{{ row[3] }}</td>
+    <td>{{ row[4] }}</td>
+    <td>{{ row[5] }}</td>
+    <td>{{ row[6] }}</td>
+    <td>{{ row[7] }} </td>
+    <td>{{ row[8] }}</td>
+    <td>{{ row[9] }}</td>
+    <td>{{ row[10] }}</td>
+    <td>{{ row[11] }}</td>
+    <td>{{ row[12] }}</td>
+    <td>{{ row[13] }}</td>
+    <td>{{ row[14] }}</td>
+    <td>{{ row[15] }}</td>
+    <td>{{ row[16] }}</td>
+    <td>{{ row[17] }}</td>
+    <td>{{ row[18] }} </td>
+    <td>{{ row[19] }}</td>
+    <td>{{ row[20] }}</td>
+    <td>{{ row[21] }}</td>
+    <td>{{ row[22] }}</td>
+    <td>{{ row[23] }}</td>
+    <td>{{ row[24] }}</td>
+    <td>{{ row[25] }}</td>
+    <td>{{ row[26] }}</td>
+    <td>{{ row[27] }}</td>
+    <td>{{ row[28] }}</td>
+    <td>{{ row[29] }}</td>
+    <td>{{ row[30] }}</td>
+    <td>{{ row[31] }}</td>
+    <td>{{ row[32] }}</td>
+    <td>{{ row[33] }}</td>
+    <td>{{ row[34] }}</td>
+    <td>{{ row[35] }}</td>
+    <td>{{ row[36] }}</td>
+    <td>{{ row[37] }}</td>
+    <td>{{ row[38] }}</td>
+    <td>{{ row[39] }}</td>
+    <td>{{ row[40] }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+{% endif %}
 </div>
 
   <div class="download" align="center"    ><br>

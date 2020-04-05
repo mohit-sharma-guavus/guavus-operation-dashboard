@@ -421,64 +421,141 @@ def add_host(clusterName):
     return render_template('addhost.html', name=clusterName)
 
 
-@app.route('/<clusterName>/checklist')
+@app.route('/<clusterName>/checklist', methods=['GET', 'POST'])
 def checklist(clusterName):
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    cursor.execute("SELECT host_fqdn FROM `%s`", (clusterName))
-    data = cursor.fetchall()
-    with open('scripts/hosts', 'w') as f:
-        for item in data:
-            f.write("%s\n" % item)
-    os.system("sh scripts/run.sh")
-    # Adding scripts output table in list of tuples
-    with open('scripts/reports/tabular_report.csv', 'r') as read_obj:
-        csv_reader = reader(read_obj)
-        list_of_lists = list(map(list, csv_reader))
-    #            print(list_of_lists)
+        if request.method == 'POST':
+#            conn = mysql.connect()
+#            cursor = conn.cursor()
+#            cursor.execute("SELECT host_fqdn FROM `%s`", (clusterName))
+#            data = cursor.fetchall()
+            data_host = request.form.getlist('host')
+            print(data_host)
+            with open('scripts/hosts', 'w') as f:
+                for item in data_host:
+                    f.write("%s\n" % item)
+            CHECK = request.form['check']
+            print(CHECK)
+            os.system("sh scripts/run.sh %d" %int(CHECK))
+            with open('scripts/reports/tabular_report.csv', 'r') as read_obj:
+                csv_reader = reader(read_obj)
+                list_of_lists = list(map(list, csv_reader))
+                print(list_of_lists)
     # Now put tuple value to the Tables
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    cursor.execute("SELECT  cluster_id, host_id FROM `%s`", (clusterName))
-    data = cursor.fetchall()
-    data1 = list(data)
-    cursor.execute("SELECT count(cluster_id) FROM `%s`", (clusterName))
-    host_count = cursor.fetchone()[0]
-    print(host_count)
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            cursor.execute("SELECT  cluster_id, host_id FROM `%s`", (clusterName))
+            data = cursor.fetchall()
+            data1 = list(data)
+   #         cursor.execute("SELECT count(cluster_id) FROM `%s`", (clusterName))
+   #         host_count = cursor.fetchone()[0]
+            host_count = len(data_host)
+            print(host_count)
     #        int_host_count = int(host_count[0])
-    print(data1)
-    check_table_name = clusterName + "_checklist"
-    for i in range(host_count):
-        list_of_lists[i].insert(0, check_table_name)
-    print(list_of_lists)
-    list_of_tuples = [tuple(l) for l in list_of_lists]
-    print(list_of_tuples)
+#           print(data1)
+            check_table_name = clusterName + "_checklist"
+            print(check_table_name)
+            for i in range(host_count):
+                list_of_lists[i].insert(0, check_table_name)
+            print(list_of_lists)
+            list_of_tuples = [tuple(l) for l in list_of_lists]
+            print(list_of_tuples)
 
-    tuple_check_table_name = (check_table_name)
-    list_check_table_name = [tuple_check_table_name, ] * host_count
-    print(list_check_table_name)
-    conn1 = mysql.get_db()
-    cur = conn1.cursor()
-    cur.execute(
-        "CREATE TABLE IF NOT EXISTS `%s`(cluster_id VARCHAR(200), host_id VARCHAR(200), host_fqdn VARCHAR(200) NOT NULL, timestamp VARCHAR(200) NOT NULL, uptime VARCHAR(200), os_version VARCHAR(200), kernel_version VARCHAR(200), disk_util_opt VARCHAR(200), disk_util_var VARCHAR(200), disk_util_root VARCHAR(200), core VARCHAR(200), memory VARCHAR(200), mtu VARCHAR(200), swap VARCHAR(200), selinux VARCHAR(200) , firewall VARCHAR(200) , ntpd VARCHAR(200) , IP_forwarding VARCHAR(200))",
-        (check_table_name))
+            tuple_check_table_name = (check_table_name)
+            list_check_table_name = [tuple_check_table_name, ] * host_count
+            print(list_check_table_name)
+
+            conn1 = mysql.get_db()
+            cur = conn1.cursor()
+            cur.execute("CREATE TABLE IF NOT EXISTS `%s`(cluster_id int(11), host_id int(11), host_fqdn VARCHAR(200) NOT NULL, timestamp VARCHAR(200) NOT NULL, ping_status VARCHAR(200), ssh_status VARCHAR(200),  system_manufacturer VARCHAR(200), system_product_name VARCHAR(200), system_uuid VARCHAR(200), system_version VARCHAR(200), kernel_version VARCHAR(200), hardware_platform VARCHAR(200), bios_version VARCHAR(200), total_cpu VARCHAR(200), processor_frequency VARCHAR(200), total_memory VARCHAR(200), number_of_disks VARCHAR(200), sum_of_disks_space VARCHAR(200), os_version VARCHAR(200), hostname VARCHAR(200), host_timezone VARCHAR(200), ntp_sync_status VARCHAR(200), cidr VARCHAR(200), selinux_status VARCHAR(200) , dhcp_status VARCHAR(200) , network_manager_status VARCHAR(200) , interface_speed VARCHAR(200), mtu_speed VARCHAR(200) , log_fs_size VARCHAR(200), root_fs_size VARCHAR(200) , ip_forward_status VARCHAR(200), dmesg_status VARCHAR(200) , transparent_huge_pages_status VARCHAR(200), hdp_status VARCHAR(200), hadoop_version VARCHAR(200), hadoop_status VARCHAR(200), kerberos_status VARCHAR(200), ambari_server_status VARCHAR(200), ambari_client_status VARCHAR(200), zookeeper_status VARCHAR(200), kafka_status VARCHAR(200), kubernetes_status VARCHAR(200))",(check_table_name))
     #        cur.executemany("INSERT INTO `%s`( host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", list_of_tuples)
-
-    for i in range(host_count):
-        j = list_of_tuples[i]
-        cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",j)
-    conn1.commit()
-    conn1.close()
-
-    print("Running Check List!!")
+            check_int = int(CHECK)
+            print(check_int)
+            print("Run condition if elif loop")
+            if check_int == 1:
+                for i in range(host_count):
+                    j = list_of_tuples[i]
+                    print(j)
+                    cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, ping_status, ssh_status, system_manufacturer, system_product_name, system_uuid, system_version, kernel_version, hardware_platform, bios_version, total_cpu, processor_frequency, total_memory, number_of_disks, sum_of_disks_space) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",(j))
+                conn1.commit()
+                conn1.close()
+                conn = mysql.connect()
+                cursor = conn.cursor()
+                cursor.execute("SELECT host_fqdn, timestamp, ping_status, ssh_status, system_manufacturer, system_product_name, system_uuid, system_version, kernel_version, hardware_platform, bios_version, total_cpu, processor_frequency, total_memory, number_of_disks, sum_of_disks_space FROM `%s` ORDER BY timestamp DESC LIMIT %s",(check_table_name, host_count))
+                data = cursor.fetchall()
+                return render_template("checklist.html", value=data, name=clusterName, view=CHECK)
+            elif check_int == 2:
+                for i in range(host_count):
+                    j = list_of_tuples[i]
+                    print(j)
+                    cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, ping_status, ssh_status, os_version, hostname, host_timezone, ntp_sync_status, cidr, selinux_status, dhcp_status, network_manager_status, interface_speed, mtu_speed, log_fs_size, root_fs_size, ip_forward_status, dmesg_status, transparent_huge_pages_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",(j))
+                conn1.commit()
+                conn1.close()
+                conn = mysql.connect()
+                cursor = conn.cursor()
+                cursor.execute("SELECT host_fqdn, timestamp, ping_status, ssh_status, os_version, hostname, host_timezone, ntp_sync_status, cidr, selinux_status, dhcp_status, network_manager_status, interface_speed, mtu_speed, log_fs_size, root_fs_size, ip_forward_status, dmesg_status, transparent_huge_pages_status FROM `%s` ORDER BY timestamp DESC LIMIT %s", (check_table_name, host_count))
+                data = cursor.fetchall()
+                return render_template("checklist.html", value=data, name=clusterName, view=CHECK)
+            elif check_int == 3:
+                for i in range(host_count):
+                    j = list_of_tuples[i]
+                    cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, ping_status, ssh_status, hdp_status, hadoop_version, hadoop_status, kerberos_status, ambari_server_status, ambari_client_status, zookeeper_status, kafka_status, kubernetes_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",j)
+                conn1.commit()
+                conn1.close()
+                conn = mysql.connect()
+                cursor = conn.cursor()
+                cursor.execute("SELECT host_fqdn, timestamp, ping_status, ssh_status, hdp_status, hadoop_version, hadoop_status, kerberos_status, ambari_server_status, ambari_client_status, zookeeper_status, kafka_status, kubernetes_status FROM `%s` ORDER BY timestamp DESC LIMIT %s",(check_table_name, host_count))
+                data = cursor.fetchall()
+                return render_template("checklist.html", value=data, name=clusterName, view=CHECK)
+            elif check_int == 4:
+                for i in range(host_count):
+                    j = list_of_tuples[i]
+                    cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, ping_status, ssh_status, system_manufacturer, system_product_name, system_uuid, system_version, kernel_version, hardware_platform, bios_version, total_cpu, processor_frequency, total_memory, number_of_disks, sum_of_disks_space, os_version, hostname, host_timezone, ntp_sync_status, cidr, selinux_status, dhcp_status, network_manager_status, interface_speed, mtu_speed, log_fs_size, root_fs_size, ip_forward_status, dmesg_status, transparent_huge_pages_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",j)
+                conn1.commit()
+                conn1.close()
+                conn = mysql.connect()
+                cursor = conn.cursor()
+                cursor.execute("SELECT host_fqdn, timestamp, ping_status, ssh_status, system_manufacturer, system_product_name, system_uuid, system_version, kernel_version, hardware_platform, bios_version, total_cpu, processor_frequency, total_memory, number_of_disks, sum_of_disks_space, os_version, hostname, host_timezone, ntp_sync_status, cidr, selinux_status, dhcp_status, network_manager_status, interface_speed, mtu_speed, log_fs_size, root_fs_size, ip_forward_status, dmesg_status, transparent_huge_pages_status FROM `%s` ORDER BY timestamp DESC LIMIT %s",(check_table_name, host_count))
+                data = cursor.fetchall()
+                return render_template("checklist.html", value=data, name=clusterName, view=CHECK)
+            elif check_int == 5:
+                for i in range(host_count):
+                    j = list_of_tuples[i]
+                    cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, ping_status, ssh_status, system_manufacturer, system_product_name, system_uuid, system_version, kernel_version, hardware_platform, bios_version, total_cpu, processor_frequency, total_memory, number_of_disks, sum_of_disks_space, hdp_status, hadoop_version, hadoop_status, kerberos_status, ambari_server_status, ambari_client_status, zookeeper_status, kafka_status, kubernetes_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",j)
+                conn1.commit()
+                conn1.close()
+                conn = mysql.connect()
+                cursor = conn.cursor()
+                cursor.execute("SELECT host_fqdn, timestamp, ping_status, ssh_status, system_manufacturer, system_product_name, system_uuid, system_version, kernel_version, hardware_platform, bios_version, total_cpu, processor_frequency, total_memory, number_of_disks, sum_of_disks_space, hdp_status, hadoop_version, hadoop_status, kerberos_status, ambari_server_status, ambari_client_status, zookeeper_status, kafka_status, kubernetes_status FROM `%s` ORDER BY timestamp DESC LIMIT %s",(check_table_name, host_count))
+                data = cursor.fetchall()
+                return render_template("checklist.html", value=data, name=clusterName, view=CHECK)
+            elif check_int == 6:
+                for i in range(host_count):
+                    j = list_of_tuples[i]
+                    cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, ping_status, ssh_status, os_version, hostname, host_timezone, ntp_sync_status, cidr, selinux_status, dhcp_status, network_manager_status, interface_speed, mtu_speed, log_fs_size, root_fs_size, ip_forward_status, dmesg_status, transparent_huge_pages_status, hdp_status, hadoop_version, hadoop_status, kerberos_status, ambari_server_status, ambari_client_status, zookeeper_status, kafka_status, kubernetes_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",j)
+                conn1.commit()
+                conn1.close()
+                conn = mysql.connect()
+                cursor = conn.cursor()
+                cursor.execute("SELECT host_fqdn, timestamp, ping_status, ssh_status, os_version, hostname, host_timezone, ntp_sync_status, cidr, selinux_status, dhcp_status, network_manager_status, interface_speed, mtu_speed, log_fs_size, root_fs_size, ip_forward_status, dmesg_status, transparent_huge_pages_status, hdp_status, hadoop_version, hadoop_status, kerberos_status, ambari_server_status, ambari_client_status, zookeeper_status, kafka_status, kubernetes_status FROM `%s` ORDER BY timestamp DESC LIMIT %s",(check_table_name, host_count))
+                data = cursor.fetchall()
+                return render_template("checklist.html", value=data, name=clusterName, view=CHECK)
+            elif check_int == 7:
+                for i in range(host_count):
+                    j = list_of_tuples[i]
+                    cur.execute("INSERT INTO `%s`(host_fqdn, timestamp, ping_status, ssh_status, system_manufacturer, system_product_name, system_uuid, system_version, kernel_version, hardware_platform, bios_version, total_cpu, processor_frequency, total_memory, number_of_disks, sum_of_disks_space, os_version, hostname, host_timezone, ntp_sync_status, cidr, selinux_status, dhcp_status, network_manager_status, interface_speed, mtu_speed, log_fs_size, root_fs_size, ip_forward_status, dmesg_status, transparent_huge_pages_status, hdp_status, hadoop_version, hadoop_status, kerberos_status, ambari_server_status, ambari_client_status, zookeeper_status, kafka_status, kubernetes_status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",j)
+                conn1.commit()
+                conn1.close()
+                conn = mysql.connect()
+                cursor = conn.cursor()
+                cursor.execute("SELECT host_fqdn, timestamp, ping_status, ssh_status, system_manufacturer, system_product_name, system_uuid, system_version, kernel_version, hardware_platform, bios_version, total_cpu, processor_frequency, total_memory, number_of_disks, sum_of_disks_space, os_version, hostname, host_timezone, ntp_sync_status, cidr, selinux_status, dhcp_status, network_manager_status, interface_speed, mtu_speed, log_fs_size, root_fs_size, ip_forward_status, dmesg_status, transparent_huge_pages_status, hdp_status, hadoop_version, hadoop_status, kerberos_status, ambari_server_status, ambari_client_status, zookeeper_status, kafka_status, kubernetes_status FROM `%s` ORDER BY timestamp DESC LIMIT %s",(check_table_name, host_count))
+                data = cursor.fetchall()
+                return render_template("checklist.html", value=data, name=clusterName, view=CHECK)
+            else:
+                print("Enter Incorrect value Check List!!")
+                return render_template("checklist.html", value=data, name=clusterName, view=CHECK)
+            print("Running Check List!!")
     # Now get the data and put in table
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding FROM `%s` ORDER BY timestamp DESC LIMIT 6",
-        (check_table_name))
-    data = cursor.fetchall()
-    return render_template("checklist.html", value=data, name=clusterName)
+
 
 
 @app.route("/<clusterName>/checklist/reports")
@@ -500,23 +577,23 @@ def download_report(clusterName):
         conn = mysql.connect()
         cursor = conn.cursor()
         check_table_name = clusterName + "_checklist"
-        cursor.execute("SELECT host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, "
-                       "disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, "
-                       "IP_forwarding FROM `%s` ORDER BY timestamp DESC LIMIT 6", (check_table_name))
+        cursor.execute("SELECT timestamp FROM `%s` ORDER BY timestamp DESC LIMIT 1", (check_table_name))
+        timestamp = cursor.fetchall()
+        cursor.execute("SELECT IFNULL(cluster_id, 'None'), IFNULL(host_id, 'None'), IFNULL(host_fqdn, 'None'), IFNULL(timestamp, 'None'), IFNULL(ping_status, 'None'), IFNULL(ssh_status, 'None'), IFNULL(system_manufacturer, 'None'), IFNULL(system_product_name, 'None'), IFNULL(system_uuid, 'None'), IFNULL(system_version, 'None'), IFNULL(kernel_version, 'None'), IFNULL(hardware_platform, 'None'), IFNULL(bios_version, 'None'), IFNULL(total_cpu, 'None'), IFNULL(processor_frequency, 'None'), IFNULL(total_memory, 'None'), IFNULL(number_of_disks, 'None'), IFNULL(sum_of_disks_space, 'None'), IFNULL(os_version, 'None'), IFNULL(hostname, 'None'), IFNULL(host_timezone, 'None'), IFNULL(ntp_sync_status, 'None'), IFNULL(cidr, 'None'), IFNULL(selinux_status, 'None'), IFNULL(dhcp_status, 'None'), IFNULL(network_manager_status, 'None'), IFNULL(interface_speed, 'None'), IFNULL(mtu_speed, 'None'), IFNULL(log_fs_size, 'None'), IFNULL(root_fs_size, 'None'), IFNULL(ip_forward_status, 'None'), IFNULL(dmesg_status, 'None'), IFNULL(transparent_huge_pages_status, 'None'), IFNULL(hdp_status, 'None'), IFNULL(hadoop_version, 'None'), IFNULL(hadoop_status, 'None'), IFNULL(kerberos_status, 'None'), IFNULL(ambari_server_status, 'None'), IFNULL(ambari_client_status, 'None'), IFNULL(zookeeper_status, 'None'), IFNULL(kafka_status, 'None'), IFNULL(kubernetes_status, 'None') FROM `%s` where timestamp=%s", (check_table_name,timestamp))
         result = cursor.fetchall()
-
+        print("Result is : ",result)
         output = io.StringIO()
         writer = csv.writer(output)
 
-        line = ['host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, '
-                'disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding']
+#        line = ['host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding']
+        line = ['cluster_id, host_id, host_fqdn, timestamp, ping_status, ssh_status, system_manufacturer, system_product_name, system_uuid, system_version, kernel_version, hardware_platform, bios_version, total_cpu, processor_frequency, total_memory, number_of_disks, sum_of_disks_space, os_version, hostname, host_timezone, ntp_sync_status, cidr, selinux_status, dhcp_status, network_manager_status, interface_speed, mtu_speed, log_fs_size, root_fs_size, ip_forward_status, dmesg_status, transparent_huge_pages_status, hdp_status, hadoop_version, hadoop_status, kerberos_status, ambari_server_status, ambari_client_status, zookeeper_status, kafka_status, kubernetes_status']
+
         writer.writerow(line)
 
+
         for row in result:
-            line = [
-                row[0] + ',' + row[1] + ',' + row[2] + ',' + row[3] + ',' + row[4] + ',' + row[5] + ',' + row[6] + ',' +
-                row[7] + ',' + row[8] + ',' + row[9] + ',' + row[10] + ',' + row[11] + ',' + row[12] + ',' + row[
-                    13] + ',' + row[14] + ',' + row[15]]
+            line = [row[0] + ',' + row[1] + ',' + row[2] + ',' + row[3] + ',' + row[4] + ',' + row[5] + ',' + row[6] + ',' + row[7] + ',' + row[8] + ',' + row[9] + ',' + row[10] + ',' + row[11] + ',' + row[12] + ',' + row[13] + ',' + row[14] + ',' + row[15] + ',' + row[16] + ',' + row[17] + ',' + row[18] + ',' + row[19] + ',' + row[20] + ',' + row[21] + ',' + row[22] + ',' + row[23] + ',' + row[24] + ',' + row[25] + ',' + row[26] + ',' + row[27] + ',' + row[28] + ',' + row[29] + ',' + row[30] + ',' + row[31] + ',' + row[32] + ',' + row[33] + ',' + row[34] + ',' + row[35] + ',' + row[36] + ',' + row[37] + ',' + row[38] + ',' + row[39] + ',' + row[40] + ',' + row[41]]
+            print("Line is :",line)
             writer.writerow(line)
 
         output.seek(0)
@@ -538,23 +615,25 @@ def download_past_report(clusterName, timestamp):
         conn = mysql.connect()
         cursor = conn.cursor()
         check_table_name = clusterName + "_checklist"
-        cursor.execute("SELECT host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, "
-                       "disk_util_var, disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, "
-                       "IP_forwarding FROM `%s` WHERE timestamp LIKE %s", (check_table_name, timestamp))
+        cursor.execute("SELECT IFNULL(cluster_id, 'None'), IFNULL(host_id, 'None'), IFNULL(host_fqdn, 'None'), IFNULL(timestamp, 'None'), IFNULL(ping_status, 'None'), IFNULL(ssh_status, 'None'), IFNULL(system_manufacturer, 'None'), IFNULL(system_product_name, 'None'), IFNULL(system_uuid, 'None'), IFNULL(system_version, 'None'), IFNULL(kernel_version, 'None'), IFNULL(hardware_platform, 'None'), IFNULL(bios_version, 'None'), IFNULL(total_cpu, 'None'), IFNULL(processor_frequency, 'None'), IFNULL(total_memory, 'None'), IFNULL(number_of_disks, 'None'), IFNULL(sum_of_disks_space, 'None'), IFNULL(os_version, 'None'), IFNULL(hostname, 'None'), IFNULL(host_timezone, 'None'), IFNULL(ntp_sync_status, 'None'), IFNULL(cidr, 'None'), IFNULL(selinux_status, 'None'), IFNULL(dhcp_status, 'None'), IFNULL(network_manager_status, 'None'), IFNULL(interface_speed, 'None'), IFNULL(mtu_speed, 'None'), IFNULL(log_fs_size, 'None'), IFNULL(root_fs_size, 'None'), IFNULL(ip_forward_status, 'None'), IFNULL(dmesg_status, 'None'), IFNULL(transparent_huge_pages_status, 'None'), IFNULL(hdp_status, 'None'), IFNULL(hadoop_version, 'None'), IFNULL(hadoop_status, 'None'), IFNULL(kerberos_status, 'None'), IFNULL(ambari_server_status, 'None'), IFNULL(ambari_client_status, 'None'), IFNULL(zookeeper_status, 'None'), IFNULL(kafka_status, 'None'), IFNULL(kubernetes_status, 'None') FROM `%s` where timestamp=%s",(check_table_name, timestamp))
         result = cursor.fetchall()
 
         output = io.StringIO()
         writer = csv.writer(output)
 
-        line = ['host_fqdn, timestamp, uptime, os_version, kernel_version, disk_util_opt, disk_util_var, '
-                'disk_util_root, core, memory, mtu, swap, selinux, firewall, ntpd, IP_forwarding']
+        line = ['cluster_id, host_id, host_fqdn, timestamp, ping_status, ssh_status, system_manufacturer, system_product_name, system_uuid, system_version, kernel_version, hardware_platform, bios_version, total_cpu, processor_frequency, total_memory, number_of_disks, sum_of_disks_space, os_version, hostname, host_timezone, ntp_sync_status, cidr, selinux_status, dhcp_status, network_manager_status, interface_speed, mtu_speed, log_fs_size, root_fs_size, ip_forward_status, dmesg_status, transparent_huge_pages_status, hdp_status, hadoop_version, hadoop_status, kerberos_status, ambari_server_status, ambari_client_status, zookeeper_status, kafka_status, kubernetes_status']
         writer.writerow(line)
 
         for row in result:
             line = [
                 row[0] + ',' + row[1] + ',' + row[2] + ',' + row[3] + ',' + row[4] + ',' + row[5] + ',' + row[6] + ',' +
                 row[7] + ',' + row[8] + ',' + row[9] + ',' + row[10] + ',' + row[11] + ',' + row[12] + ',' + row[
-                    13] + ',' + row[14] + ',' + row[15]]
+                    13] + ',' + row[14] + ',' + row[15] + ',' + row[16] + ',' + row[17] + ',' + row[18] + ',' + row[
+                    19] + ',' + row[20] + ',' + row[21] + ',' + row[22] + ',' + row[23] + ',' + row[24] + ',' + row[
+                    25] + ',' + row[26] + ',' + row[27] + ',' + row[28] + ',' + row[29] + ',' + row[30] + ',' + row[
+                    31] + ',' + row[32] + ',' + row[33] + ',' + row[34] + ',' + row[35] + ',' + row[36] + ',' + row[
+                    37] + ',' + row[38] + ',' + row[39] + ',' + row[40] + ',' + row[41]]
+            print("Line is :", line)
             writer.writerow(line)
 
         output.seek(0)

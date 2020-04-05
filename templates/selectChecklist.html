@@ -67,6 +67,7 @@ function closeNav() {
 
   <div style="margin-top: 100px;">
 <p style="margin-top: 40px; margin-left: 1.5%; font-size: 30px;"><b>Cluster {{ name }} : Run Checklist</b></p>
+      <form action = "/{{ name }}/checklist"  method="post">
 <div class="table-div4">
 <table>
   <thead>
@@ -83,7 +84,7 @@ function closeNav() {
   {% for row in value %}
   <tr>
     <td></td>
-    <td><input type="checkbox" name="{{ row[3] }}"/></td>
+    <td><input type="checkbox" name="host" value="{{ row[2] }}"/></td>
     <td>{{ row[0] }} </td>
     <td>{{ row[1] }}</td>
     <td>{{ row[2] }}</td>
@@ -108,12 +109,12 @@ function closeNav() {
   <tr class="checklist">
     <td></td>
       <td class="checklist"><input type="radio" id="val1" name="check" value="1"></td>
-    <td class="checklist"><label for="val1"> OS Checks </label></td>
+    <td class="checklist"><label for="val1"> Hardware Checks </label></td>
   </tr>
    <tr class="checklist">
        <td></td>
     <td class="checklist"><input type="radio" id="val2" name="check" value="2"></td>
-    <td class="checklist"><label for="val1"> Hardware Checks </label></td>
+    <td class="checklist"><label for="val1"> OS Checks </label></td>
   </tr class="checklist">
    <tr>
        <td></td>
@@ -145,8 +146,12 @@ function closeNav() {
 </div>
 <br>
 <div style="margin-bottom: 3%;" align="center">
-  <a href="/{{ name }}/checklist" target="blank"><button class="delete">Run Checklist</button></a>
+  <button type="submit" class="delete">Run Checklist</button>
 </div>
+          <!--div class="run" align="center">
+  <button type="submit" class="delete" style="">Run Checklist</button>
+</div-->
+      </form>
 
 
 

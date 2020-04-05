@@ -8,21 +8,6 @@
 
 
 
-   tbody
-    {
-    counter-reset: Serial;           /* Set the Serial counter to 0 */
-    }
-
-
-tr td:first-child:before
-{
-  counter-increment: Serial;      /* Increment the Serial counter */
-  content: counter(Serial); /* Display the counter */
-}
-
-name
-
-
 </style>
 
 <body class="header">
@@ -81,12 +66,12 @@ function openCity(evt, cityName) {
   <button class="tablinks" onclick="openCity(event, 'Paris')">Reports</button>
 ​
 <div id="London" class="tabcontent"><br>
-  <p style="margin-top: 40px; margin-left: 1.5%; font-size: 30px;"><b>"{{ name }}"</b></p>
+  <p style="margin-top: 40px; margin-left: 1.5%; font-size: 30px;"><b> Cluster {{ name }} : Stats</b></p>
 
 </div>
 ​
 <div id="Paris" class="tabcontent"><br>
-  <p style="margin-top: 40px; margin-left: 1.5%; font-size: 30px;"><b>"{{ name }}"</b></p>
+  <p style="margin-top: 40px; margin-left: 1.5%; font-size: 30px;"><b> Cluster {{ name }} : Past 10 Checklist Reports</b></p>
   <div class="table-div1">
   <table>
   <thead>
