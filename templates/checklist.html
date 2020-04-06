@@ -30,17 +30,20 @@ tr td:first-child:before
  <label style="margin-left: 32%">User Name</label>
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <div style="margin-top: 10%;">
-  <a href="#">Dashboard</a>
-  <a href="#">Cluster Inventory</a>
-  <a href="#">Monitoring</a>
-  <a href="#">Deployment</a>
-  <a href="#">Self Diagnostic</a>
-  <a href="#">Self Heal</a>
-  <a href="checklist_reports.html">Reports & Stats</a>
+  <a href="/inprogress">Dashboard</a>
+  <a href='/{{ name }}/hosts'>Cluster Inventory</a>
+  <a href='/{{ name }}/hosts/checklist'>Run Checklist</a>
+  <a href="/inprogress">Monitoring</a>
+  <a href="/inprogress">Deployment</a>
+  <a href="/inprogress">Self Diagnostic</a>
+  <a href="/inprogress">Self Heal</a>
+   <a href="/{{ name }}/checklist/reports">Reports & Stats</a>
   <a href="https://guavus.atlassian.net/wiki/spaces/CS/pages/1075183620/Operational+Dashboard">About</a>
   <a href="#">FAQs</a>
   </div>
 </div>
+
+
 
 <div style="position: absolute; margin-top: 0.5%; margin-left: 1%">
 <span class="span1" onclick="openNav()">&#9776;</span>
@@ -53,6 +56,7 @@ function openNav() {
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
+
 </script>
 
 
@@ -540,6 +544,7 @@ function closeNav() {
   <div class="download" align="center"    ><br>
     <a href="/{{ name }}/return-file" target="blank"><button class="delete" >Export as csv</button></a>
   </div>
+
 
 
 <a href = "{{ url_for('clusters') }}"><label class="hometext">Home</label><img class="home-button" src="/static/home.png"></a>

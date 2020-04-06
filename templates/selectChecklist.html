@@ -66,7 +66,7 @@ function closeNav() {
 
 
   <div style="margin-top: 100px;">
-<p style="margin-top: 40px; margin-left: 1.5%; font-size: 30px;"><b>Cluster {{ name }} : Run Checklist</b></p>
+<p style="margin-top: 40px; margin-left: 1.5%; font-size: 30px;">Cluster {{ name }} : Run Checklist</p>
       <form action = "/{{ name }}/checklist"  method="post">
 <div class="table-div4">
 <table>
@@ -154,12 +154,13 @@ function closeNav() {
       </form>
 
 
-
 <a href = "{{ url_for('clusters') }}"><label class="hometext">Home</label><img class="home-button" src="/static/home.png"></a>
 
 <a href = "{{ url_for('profile') }}"><label class="profiletext">Profile</label><img class="profile-button" src="/static/profile.png"></a>
 
 <a href = "{{ url_for('logout') }}"><label class="logouttext">Logout</label><img class="logout-button" src="/static/logout.png"></a>
+
+
 
 <div class="footer"></div>
 <div id="snackbar">Cluster X has been deleted</div>
@@ -178,6 +179,8 @@ function myFunction() {
   }
   document.getElementById("demo").innerHTML = txt;
 }
+
+
 </script>
 </body>
 </html>

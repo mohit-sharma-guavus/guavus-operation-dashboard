@@ -231,8 +231,8 @@ def add_cluster():
         cursor3.execute("SELECT cluster_name FROM cluster_info WHERE cluster_name = %s", (check_cluster_name))
         data3 = cursor3.fetchone()
         if data3:
-            error = 'Oops! Cluster with this name already exists! Try again with new name.'
-            return render_template("clusters.html", error=error)
+            flash("Cluster already exists!", "danger")
+            return redirect(url_for("clusters"))
         else:
             new_cluster_name = request.form['email']
             cluster_description = request.form['description']

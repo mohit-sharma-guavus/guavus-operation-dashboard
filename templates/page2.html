@@ -85,7 +85,7 @@ function closeNav() {
     <a href = "/{{ name }}/add_host"><img class="addcluster-button" src="/static/plus.png"></a>
   </div>
   <div style="margin-top: 100px;">
-<p style="margin-top: 40px; margin-left: 1.5%; font-size: 30px;"><b>Cluster {{name}} : Inventory Details</b></p>
+<p style="margin-top: 40px; margin-left: 1.5%; font-size: 30px;">Cluster {{name}} : Inventory Details</p>
 <div class="table-div">
 <table>
   <thead>
@@ -112,6 +112,18 @@ function closeNav() {
 </tbody>
 </table>
 </div>
+
+      <!--div class="buttons-div">
+  <a href='/{{ name }}/hosts/checklist'><button class="main-button">Run Checklist</button></a>
+
+  <a href="/inprogress"><button class="main-button">Monitoring</button></a>
+
+  <a href="/inprogress"><button class="main-button" >Deployment</button></a>
+
+  <a href="/inprogress"><button class="main-button">Self-Diagonasis</button></a>
+
+  <a href="/inprogress"><button class="main-button">Self-Heal</button></a>
+</div-->
 
 
 <a href = "{{ url_for('clusters') }}"><label class="hometext">Home</label><img class="home-button" src="/static/home.png"></a>

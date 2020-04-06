@@ -83,7 +83,7 @@
   cursor: pointer;
   opacity: 0.8;
   position: absolute;
-  top: 2.5%;
+  top: 2.25%;
   right: 28px;
   width: 28px;
   height: 28px;
@@ -100,7 +100,7 @@
   cursor: pointer;
   opacity: 0.8;
   position: absolute;
-  top: 2.5%;
+  top: 2.25%;
   right: 28px;
   width: 28px;
   height: 28px;
@@ -117,7 +117,7 @@
   cursor: pointer;
   opacity: 0.8;
   position: absolute;
-  top: 2.5%;
+  top: 2.25%;
   right: 28px;
   width: 28px;
   height: 28px;
@@ -134,10 +134,10 @@
   cursor: pointer;
   opacity: 0.8;
   position: absolute;
-  top: 12.5%;
+  top: 12%;
   right: 28px;
   border-radius: 50%;
-  left: 89%;
+  left: 91.5%;
 }
 
 .plustext-host {
@@ -147,10 +147,10 @@
   cursor: pointer;
   opacity: 0.8;
   position: absolute;
-  top: 12.5%;
+  top: 12%;
   right: 28px;
   border-radius: 50%;
-  left: 90.5%;
+  left: 91.5%;
 }
 
 .textbox{
@@ -303,8 +303,7 @@ font-size: 15px;
 .buttons-div{
   width: auto;
   left: 10%;
-  margin-top: 150px;
-  margin-left: 100px;
+  margin-left: 130px;
   position: absolute;
 }
 
@@ -399,7 +398,7 @@ table {
 }
 
 th, td {
-  text-align: left;
+  text-align: center;
   padding: 8px;
 }
 
@@ -410,7 +409,20 @@ th {
   color: white;
 }
 
+div#content {
+    display: none;
+    }
 
+div#loading {
+    top: 200 px;
+    margin: auto;
+    position: absolute;
+    z-index: 1000;
+    width: 160px;
+    height: 24px;
+    background: url(loadingimage.gif) no-repeat;
+    cursor: wait;
+    }
 
 
   #snackbar {
@@ -457,7 +469,7 @@ th {
 
 
 .sidenav {
-  height: 84%;
+  height: 90.3%;
   width: 0;
   position: fixed;
   z-index: 1;
